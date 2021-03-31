@@ -5,3 +5,5 @@ pandas
 Werkzeug
 gunicorn
 catboost
+configparser
+flask_mysqldb
