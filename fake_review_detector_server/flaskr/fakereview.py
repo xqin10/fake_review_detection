@@ -8,8 +8,11 @@ from flask_login import LoginManager, UserMixin
 from flask import Flask, render_template, request, session, redirect, url_for
 from flask_mysqldb import MySQL
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import db
 import configparser
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 
@@ -41,12 +44,21 @@ def request_loader(request):
   username = request.form.get('username')
   if username not in users:
     return
+<<<<<<< Updated upstream
 
   user = User()
   user.id = username
 
   user.is_authenticated = request.form['pw'] == users[username]['pw']
 
+=======
+
+  user = User()
+  user.id = username
+
+  user.is_authenticated = request.form['pw'] == users[username]['pw']
+
+>>>>>>> Stashed changes
   return user
 
 
@@ -68,15 +80,21 @@ def home():
     total_reviews_count, true_reviews_count = db.get_review_stat(mysql)
     return render_template('index.html',
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                             total_reviews_coun = total_reviews_count,
                             perc_true_review = float(true_reviews_count/(total_reviews_count+0.01)) # calcualte percentage of true reviews.
                           )
 =======
+=======
+>>>>>>> Stashed changes
                            total_reviews_count=total_reviews_count,
                            perc_true_review=round(float(true_reviews_count / (total_reviews_count + 0.01)) * 100, 2)
                            # calcualte percentage of true reviews.
                            )
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
 @app.route("/features")
@@ -109,6 +127,9 @@ def predict():
     Do prediction with one review from pront-end.
     """
     global total_reviews_count, my_prediction, true_reviews_count
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     if request.method == 'POST':
         message = request.form['message']
@@ -119,14 +140,20 @@ def predict():
 
     return render_template('index.html',
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                            prediction = my_prediction,
                            total_reviews_coun = total_reviews_count,
                            perc_true_review = float(true_reviews_count/(total_reviews_count+0.01)) # calcualte percentage of true reviews.
 =======
+=======
+>>>>>>> Stashed changes
                            prediction=my_prediction,
                            total_reviews_count=total_reviews_count,
                            perc_true_review=round(float(true_reviews_count / (total_reviews_count + 0.01)) * 100, 2)
                            # calcualte percentage of true reviews.
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
                            )
 
@@ -138,6 +165,9 @@ if __name__ == '__main__':
     env = app.config['ENV']
     print("Loading in {} environment ....".format(env))
     print("pwd: ", os.getcwd())
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     # Read resources
     filename = 'resources/CatBoostClassifier.pkl'
@@ -184,4 +214,7 @@ if __name__ == '__main__':
     else:
         app.run(debug=True)
         print("Running server in DEBUG mode ...")
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
