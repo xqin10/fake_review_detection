@@ -7,8 +7,13 @@ gunicorn
 catboost
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 configparser
 flask_mysqldb
+=======
+Flask-MySQLdb
+configparser
+>>>>>>> Stashed changes
 =======
 Flask-MySQLdb
 configparser

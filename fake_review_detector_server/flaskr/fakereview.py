@@ -9,8 +9,11 @@ from flask import Flask, render_template, request, session, redirect, url_for
 from flask_mysqldb import MySQL
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import db
 import configparser
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 =======
@@ -45,12 +48,21 @@ def request_loader(request):
   if username not in users:
     return
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
   user = User()
   user.id = username
 
   user.is_authenticated = request.form['pw'] == users[username]['pw']
 
+=======
+
+  user = User()
+  user.id = username
+
+  user.is_authenticated = request.form['pw'] == users[username]['pw']
+
+>>>>>>> Stashed changes
 =======
 
   user = User()
@@ -81,10 +93,13 @@ def home():
     return render_template('index.html',
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                             total_reviews_coun = total_reviews_count,
                             perc_true_review = float(true_reviews_count/(total_reviews_count+0.01)) # calcualte percentage of true reviews.
                           )
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
                            total_reviews_count=total_reviews_count,
@@ -93,6 +108,9 @@ def home():
                            )
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -128,6 +146,9 @@ def predict():
     """
     global total_reviews_count, my_prediction, true_reviews_count
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -141,10 +162,13 @@ def predict():
     return render_template('index.html',
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                            prediction = my_prediction,
                            total_reviews_coun = total_reviews_count,
                            perc_true_review = float(true_reviews_count/(total_reviews_count+0.01)) # calcualte percentage of true reviews.
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
                            prediction=my_prediction,
@@ -152,6 +176,9 @@ def predict():
                            perc_true_review=round(float(true_reviews_count / (total_reviews_count + 0.01)) * 100, 2)
                            # calcualte percentage of true reviews.
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -166,6 +193,9 @@ if __name__ == '__main__':
     print("Loading in {} environment ....".format(env))
     print("pwd: ", os.getcwd())
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -215,6 +245,9 @@ if __name__ == '__main__':
         app.run(debug=True)
         print("Running server in DEBUG mode ...")
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
