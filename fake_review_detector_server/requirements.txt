@@ -5,5 +5,10 @@ pandas
 Werkzeug
 gunicorn
 catboost
+<<<<<<< Updated upstream
 configparser
 flask_mysqldb
+=======
+Flask-MySQLdb
+configparser
+>>>>>>> Stashed changes
