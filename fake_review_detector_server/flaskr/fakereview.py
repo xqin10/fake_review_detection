@@ -6,6 +6,7 @@ from catboost import Pool,CatBoostClassifier
 from flask_mysqldb import MySQL
 import db
 import configparser
+import math
 
 
 app = Flask(__name__)
@@ -14,8 +15,8 @@ app = Flask(__name__)
 def home():
     total_reviews_count, true_reviews_count = db.get_review_stat(mysql)
     return render_template('index.html',
-                            total_reviews_coun = total_reviews_count,
-                            perc_true_review = float(true_reviews_count/(total_reviews_count+0.01)) # calcualte percentage of true reviews.
+                            total_reviews_count = total_reviews_count,
+                            perc_true_review = round(float(true_reviews_count/(total_reviews_count+0.01))*100,2) # calcualte percentage of true reviews.
                           )
 
 @app.route("/features")
@@ -36,8 +37,9 @@ def contact():
 
 @app.route('/predict',methods=['POST'])
 def predict():
-    #cv = CountVectorizer(ngram_range=(1, 2))
-
+    """
+    Do prediction with one review from pront-end.
+    """
     if request.method == 'POST':
         message = request.form['message']
         data = [message]
@@ -47,12 +49,15 @@ def predict():
 
     return render_template('index.html',
                            prediction = my_prediction,
-                           total_reviews_coun = total_reviews_count,
-                           perc_true_review = float(true_reviews_count/(total_reviews_count+0.01)) # calcualte percentage of true reviews.
+                           total_reviews_count = total_reviews_count,
+                           perc_true_review = round(float(true_reviews_count/(total_reviews_count+0.01))*100,2) # calcualte percentage of true reviews.
                            )
 
 
 if __name__ == '__main__':
+
+    env = app.config['ENV']
+    print("Loading in {} environment ....".format(env))
 
     # Read resources
     filename = 'resources/CatBoostClassifier.pkl'
@@ -67,14 +72,23 @@ if __name__ == '__main__':
     app.secret_key = 'LUCKY'
 
     # Enter your database connection details below
-    app.config['MYSQL_HOST'] = config.get("db", "dbhost")
-    app.config['MYSQL_USER'] = config.get("db", "dbuser")
-    app.config['MYSQL_PASSWORD'] = config.get("db", "dbpassword") # later change it to config.ini
-    app.config['MYSQL_DB'] = config.get("db", "dbname")
+    if env == 'production':
+        app.config['MYSQL_HOST'] = config.get("db-prod", "dbhost")
+        app.config['MYSQL_USER'] = config.get("db-prod", "dbuser")
+        app.config['MYSQL_PASSWORD'] = config.get("db-prod", "dbpassword") # later change it to config.ini
+        app.config['MYSQL_DB'] = config.get("db-prod", "dbname")
+    else:
+        app.config['MYSQL_HOST'] = config.get("db-dev", "dbhost")
+        app.config['MYSQL_USER'] = config.get("db-dev", "dbuser")
+        app.config['MYSQL_PASSWORD'] = config.get("db-dev", "dbpassword") # later change it to config.ini
+        app.config['MYSQL_DB'] = config.get("db-dev", "dbname")
 
     # Intialize MySQL
     mysql = MySQL(app)
 
-    app.run(debug=True)
-
-    #app.run(host = "0.0.0.0", port = 5000)
+    if env == 'production':
+        app.run(host = "0.0.0.0", port = 8000)
+        print("Running server in PRODUCTION mode ...")
+    else:
+        app.run(debug=True)
+        print("Running server in DEBUG mode ...")

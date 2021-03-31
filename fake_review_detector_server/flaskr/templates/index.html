@@ -43,12 +43,13 @@ We help our customers detect which is the deceptive reviews and notify them as s
                 <p style="text-align: center;max-width: 100%;width: 100%;font-size: 150%;font-weight: bold;"></p><textarea name="message" class="flex-grow-1 flex-shrink-1 flex-fill justify-content-center align-items-center align-content-center align-self-center flex-wrap" style="width: 100%;margin-left: 0%;margin-right: 0;margin-bottom: 5%;" placeholder="Paste a review here." rows="5"></textarea>
                     <button type="submit" class="btn btn-primary btn-block btn-large">Analyze</button>
                     <br>        </br></br>
-	        {% if prediction == 0 %}
-	        <h2 style="color:rgb(255, 0, 0);"><strong>This is a Fake Review! </strong></h2>
-	        {% elif prediction == 1 %}
-	        <h2 style="color:rgb(1, 250, 134)"><strong>Don't worry, it's not a Fake Review </strong></h2>
-	        {% endif %}
-
+                {% if prediction == 0 %}
+                <h4 style="color:rgb(255, 0, 0);"><strong>This is a Fake Review! </strong></h4>
+                {% elif prediction == 1 %}
+                <h4 style="color:rgb(1, 250, 134)"><strong>Don't worry, it's not a Fake Review </strong></h4>
+                {% endif %}
+                <!-- This should be improved that if there's 0 reviews should not be visible -->
+                <p style="width: 100%;">Totally {{ total_reviews_count }} reviews have been submited, with {{ perc_true_review }}% of them were true.</p>
             </div>
         </section>
         <section>
