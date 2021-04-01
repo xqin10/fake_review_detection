@@ -1,17 +1,27 @@
-# fake_review_detection
-A final project for FIT5120 with all necessary files and instructions in it.
-# Project Smartacus 
+# Smartacus V1
+
+http://smartacus.tech/
+
 ## Detect fake reviews of restaurants, cafes and bars
 
+Smartacus is a free website to identify fake reviews from hotels, restaurants, cafes, and bars.
+Online reviews may be fake, but their effects are real. 
+
+## Target Audience
+   Smartacus intends to be useful for travellers coming to Australia and businesses like hotels, restaurants and cafes in Australia, who are listed on the website like Trip Advisor.
+## Background
+   Smartacus is a web application with a chrome extension that would help travellers distinguish spam reviews when choosing products or services from a website like Tripadvisor. Smartacus also helps small businesses filter spam comments on TripAdvisor.
+
+## Get up and running in 5 mins
 
 
-## Deploy Server on AWS EC2
+### Deploy Server on AWS EC2
 
 After we start and login to our EC2 instance, we can do the following steps in order to make our server run.
 
 **Note:** we use python 3.8.5 on Ubuntu 20.04.2 LTS.
 
-### 1. Clone Flask app inside EC2
+#### 1. Clone Flask app inside EC2
 
 - Create directory for our service.
 
@@ -80,7 +90,7 @@ Our project organization may look something like:
 
 
 
-### 2. Run the Flask Application
+#### 2. Run the Flask Application
 
 Just go to the project root directory and run 
 
@@ -94,7 +104,7 @@ And if you can see the index.html content, then it means you nailed it.
 
 
 
-### 3. Run Nginx Webserver to accept and route request to Gunicorn
+#### 3. Run Nginx Webserver to accept and route request to Gunicorn
 
 And then, we set up Nginx as a reverse-proxy to accept the requests from the user and route it our server.
 
@@ -135,6 +145,6 @@ And finally, you can visit your site via public IP of your EC2 on Browser!
 
 
 
-## Binding Domain to EC2 public IP
+### Binding Domain to EC2 public IP
 
-to sam.
+
