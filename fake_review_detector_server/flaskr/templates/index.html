@@ -44,6 +44,9 @@ We help our customers detect which is the deceptive reviews and notify them as s
                 <p style="text-align: center;max-width: 100%;width: 100%;font-size: 150%;font-weight: bold;"></p><textarea name="message" class="flex-grow-1 flex-shrink-1 flex-fill justify-content-center align-items-center align-content-center align-self-center flex-wrap" style="width: 100%;margin-left: 0%;margin-right: 0;margin-bottom: 5%;" placeholder="Paste a review here." rows="5"></textarea>
                     <button type="submit" class="btn btn-primary btn-block btn-large">Check Review</button>
                     <br>        </br></br>
+
+                {% if word_count < 200 %}
+                <h4 style="color:rgb(255, 0, 0);"><strong>The minimum of word is 200, please input more! </strong></h4>
                 {% if prediction == 0 %}
                 <h4 style="color:rgb(255, 0, 0);"><strong>This is a Fake Review! </strong></h4>
                 {% elif prediction == 1 %}
