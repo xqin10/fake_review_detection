@@ -2,6 +2,7 @@ import flask_login
 import re
 import spacy
 from spacy_langdetect import LanguageDetector
+from spacy.language import Language
 from flask import Flask, render_template, url_for, request, session, redirect
 import pandas as pd
 import numpy as np
@@ -75,6 +76,8 @@ def charts():
 def home():
     total_reviews_count, true_reviews_count = db.get_review_stat(mysql)
     return render_template('index.html',
+                            word_count = None,
+                            language = None,
                             total_reviews_count = total_reviews_count,
                             perc_true_review = round(float(true_reviews_count/(total_reviews_count+0.01))*100,2) # calcualte percentage of true reviews.
                           )
@@ -95,6 +98,10 @@ def howtouse():
 def contact():
     return render_template("contact-us.html")
 
+@Language.factory('language_detector')
+def create_lang_detector(nlp, name):
+    return LanguageDetector()
+
 @app.route('/predict',methods=['POST'])
 def predict(y_prob=None):
     """
@@ -104,23 +111,27 @@ def predict(y_prob=None):
         message = request.form['message']
         data = [message]
         # to count words in string
-        res = len(re.findall(r'\w+', data))
+        print(message)
+        res = len(re.findall(r'\w+', message))
 
         # document level language detection. Think of it like average language of the document!
-        nlp = spacy.load('en_core_web_sm')
-        nlp.add_pipe(LanguageDetector(), name='language_detector', last=True)
-        doc = nlp(data)
+        nlp = spacy.load('resources/en_core_web_sm')
+        # nlp.add_pipe(LanguageDetector(), name='language_detector', last=True)
+        nlp.add_pipe('language_detector', last=True)
+        doc = nlp(message)
         main_language = doc._.language["language"]
-        #print(doc._.language)
+        print(main_language)
 
         # the word limitation
-        if res >= 200 and main_language == "en":
+        my_prediction = 0
+        y_prob_deceptive = 0
+        if res >= 20 and main_language == "en":
             my_prediction = clf.predict(cv.transform(data).toarray())
             y_prob = clf.predict_proba(cv.transform(data).toarray()) #return the labe prediction probability
             y_prob_deceptive = y_prob[:,1]*100 #label prediction probability in percent
             db.insert_review(mysql,message, my_prediction[0])
-            total_reviews_count, true_reviews_count = db.get_review_stat(mysql)
-            #answer = "The minimum of word is 200, please input more"
+    
+    total_reviews_count, true_reviews_count = db.get_review_stat(mysql)
     return render_template('index.html',
                            word_count = res,
                            language = main_language,
@@ -130,32 +141,19 @@ def predict(y_prob=None):
                            perc_true_review = round(float(true_reviews_count/(total_reviews_count+0.01))*100,2) # calcualte percentage of true reviews.
                            )
 
-@app.route('/url_predict',methods=['POST'])
-def url_predict():
-    """
-    Do prediction with one review from pront-end.
-    """
-    if request.method == 'POST':
-        message = request.form['message']
-        data = [message]
-        my_prediction = clf.predict(cv.transform(data).toarray())
-        db.insert_review(mysql,message, my_prediction[0])
-        total_reviews_count, true_reviews_count = db.get_review_stat(mysql)
-
-    return render_template('index.html',
-                           prediction = my_prediction,
-                           total_reviews_count = total_reviews_count,
-                           perc_true_review = round(float(true_reviews_count/(total_reviews_count+0.01))*100,2) # calcualte percentage of true reviews.
-                           )
-
 def scrape(start_url):
+  """
+  Crawl the given start_url.
+  This function has inner ability to extend to do vertical search.
+
+  Param: 
+    start_url
+  Return:
+
+  """
   # start_url = 'https://www.tripadvisor.com.au/Restaurant_Review-g255100-d728473-Reviews-Sud_Food_and_Wine-Melbourne_Victoria.html'
   # split the url to different parts
   url_parts = start_url.split('-Reviews-')
-  #url_parts[0]
-  #url_parts[1]
-  #url_pattern = url_parts[0]+'-Reviews-'+'or{}-'+url_parts[1]
-  #print(url_pattern)
   urls = []
   reviewArr = []
   if "Hotel_Review" in start_url:
@@ -177,9 +175,7 @@ def scrape(start_url):
                   "review_date": review.find('div', attrs={"class": "_2fxQ4TOx"}).text}
               print(reviewObject)
               reviewArr.append(reviewObject)
-      # extra elements from json object in array
-      #for obj in reviewArr:
-          #print(obj.get("review"))
+
   elif "Restaurant_Review" in start_url:
       # find all URLS of reviews (define how many pages are needed, here we set it for 1 pages) for this restaurant
       for page in range(0,1):
@@ -202,6 +198,50 @@ def scrape(start_url):
               reviewArr.append(reviewObject)
   else: 
       print("Please only paste URL of hotel or restaurant review from Trip Advisor!")
+  return reviewArr
+
+
+@app.route('/url_predict',methods=['POST'])
+def url_predict():
+    """
+    Do prediction with one url from pront-end.
+    """
+    if request.method == 'POST':
+        url = request.form['message']
+        data = scrape(url)
+        my_prediction = clf.predict(cv.transform(data).toarray())
+        y_prob = clf.predict_proba(cv.transform(data).toarray()) #return the labe prediction probability
+        y_prob_deceptive = y_prob[:,1]*100 #label prediction probability in percent
+        # db.insert_review(mysql,message, my_prediction[0])
+        total_reviews_count, true_reviews_count = db.get_review_stat(mysql)
+        # data = [message]
+
+        # to count words in string
+        # res = len(re.findall(r'\w+', data))
+
+        # # document level language detection. Think of it like average language of the document!
+        # nlp = spacy.load('en_core_web_sm')
+        # nlp.add_pipe(LanguageDetector(), name='language_detector', last=True)
+        # doc = nlp(data)
+        # main_language = doc._.language["language"]
+        # #print(doc._.language)
+
+        # the word limitation
+        # if res >= 200 and main_language == "en":
+        #     my_prediction = clf.predict(cv.transform(data).toarray())
+        #     y_prob = clf.predict_proba(cv.transform(data).toarray()) #return the labe prediction probability
+        #     y_prob_deceptive = y_prob[:,1]*100 #label prediction probability in percent
+        #     db.insert_review(mysql,message, my_prediction[0])
+        #     total_reviews_count, true_reviews_count = db.get_review_stat(mysql)
+        #     #answer = "The minimum of word is 200, please input more"
+    return render_template('charts.html',
+                          #  word_count = res,
+                          #  language = main_language,
+                           prediction = my_prediction,
+                           deceptive_prob = y_prob_deceptive,
+                           total_reviews_count = total_reviews_count,
+                           perc_true_review = round(float(true_reviews_count/(total_reviews_count+0.01))*100,2) # calcualte percentage of true reviews.
+                           )
 
 
 if __name__ == '__main__':
@@ -210,10 +250,11 @@ if __name__ == '__main__':
     print("Loading in {} environment ....".format(env))
 
     # Read resources
-    #filename = 'resources/CatBoostClassifier.pkl'
-    filename = 'resources/lightBGM.pkl'
+    filename = 'resources/CatBoostClassifier.pkl'
+    # filename = 'resources/lightBGM.pkl'
     clf = pickle.load(open(filename,'rb'))
-    cv = pickle.load(open('resources/cvtransform.pkl','rb'))
+    # cv = pickle.load(open('resources/cvtransform.pkl','rb'))
+    cv = pickle.load(open('resources/transform.pkl','rb'))
 
     # Read config.init
     config = configparser.ConfigParser()

@@ -9,17 +9,17 @@
     <meta name="description" content="Popular travel website trip advisor was flooded with millions of spam hotel reviews in 2019, travellers were misled by these spam reviews and ended up choosing accommodations that did not meet their expectations. It is particularly hard for humans to distinguish spam review from genuine reviews. 
 
 We help our customers detect which is the deceptive reviews and notify them as soon as they open the webpage. The review contents will be sent back to our server side and have a judgement immediately.">
-    <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css?h=93b9126d9897228aed9a2962d27e678d">
+    <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i">
-    <link rel="stylesheet" href="../static/fonts/font-awesome.min.css?h=5ef01a1d3ea555acf3dc221bf2ad88a9">
-    <link rel="stylesheet" href="../static/fonts/simple-line-icons.min.css?h=5ef01a1d3ea555acf3dc221bf2ad88a9">
-    <link rel="stylesheet" href="../static/css/Footer-Clean.css?h=80440af34c3a73cbe2f06ff4585d315b">
-    <link rel="stylesheet" href="../static/css/Highlight-Clean.css?h=22f5c37d9256feae966552e68b9ff2f3">
-    <link rel="stylesheet" href="../static/css/Highlight-Phone.css?h=34cb454057667119be71974590677f5d">
+    <link rel="stylesheet" href="../static/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="../static/fonts/simple-line-icons.min.css">
+    <link rel="stylesheet" href="../static/css/Footer-Clean.css">
+    <link rel="stylesheet" href="../static/css/Highlight-Clean.css">
+    <link rel="stylesheet" href="../static/css/Highlight-Phone.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.css">
-    <link rel="stylesheet" href="../static/css/smoothproducts.css?h=38a515b6b30123300b3619cce6411cec">
-    <link rel="stylesheet" href="../static/css/Team-Clean.css?h=96674734e5c3c822192833a73a70ff3f">
-    <link rel="stylesheet" href="../static/css/Team-Grid.css?h=037c10c4e83bd71c345e85c360a593fe">
+    <link rel="stylesheet" href="../static/css/smoothproducts.css">
+    <link rel="stylesheet" href="../static/css/Team-Clean.css">
+    <link rel="stylesheet" href="../static/css/Team-Grid.css">
 </head>
 
 <body style="background: #eeeeee;">
@@ -41,17 +41,40 @@ We help our customers detect which is the deceptive reviews and notify them as s
             <div class="text">
                 <p style="width: 100%;font-size: 150%;font-weight: bold;">Identify fake reviews from the hotels, restaurants, cafes and bars.&nbsp;<strong>Save yourself from a horrible experience.</strong></p>
                 <form action="{{ url_for('predict')}}" method="POST">
-                <p style="text-align: center;max-width: 100%;width: 100%;font-size: 150%;font-weight: bold;"></p><textarea name="message" class="flex-grow-1 flex-shrink-1 flex-fill justify-content-center align-items-center align-content-center align-self-center flex-wrap" style="width: 100%;margin-left: 0%;margin-right: 0;margin-bottom: 5%;" placeholder="Paste a review here." rows="5"></textarea>
-                    <button type="submit" class="btn btn-primary btn-block btn-large">Check Review</button>
-                    <br>        </br></br>
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item"><a class="nav-link active" href="#review" data-toggle="tab">Review</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#url" data-toggle="tab">Url</a></li>
+                        <!-- <li role="presentation"><a href="#">Messages</a></li> -->
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane fade in active" id="review">
+                            <div style="padding:10px;">
+                                <p style="text-align: center;max-width: 100%;width: 100%;font-size: 150%;font-weight: bold;"></p><textarea name="message" class="flex-grow-1 flex-shrink-1 flex-fill justify-content-center align-items-center align-content-center align-self-center flex-wrap" style="width: 100%;margin-left: 0%;margin-right: 0;margin-bottom: 5%;" placeholder="Paste a review here." rows="5"></textarea>
+                                <button type="submit" class="btn btn-primary btn-block btn-large">Check Review</button>
+                                <br>        </br></br>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="url">
+                            <div style="padding:10px;">
+                                Hello
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <p style="text-align: center;max-width: 100%;width: 100%;font-size: 150%;font-weight: bold;"></p><textarea name="message" class="flex-grow-1 flex-shrink-1 flex-fill justify-content-center align-items-center align-content-center align-self-center flex-wrap" style="width: 100%;margin-left: 0%;margin-right: 0;margin-bottom: 5%;" placeholder="Paste a review here." rows="5"></textarea>
+                        <button type="submit" class="btn btn-primary btn-block btn-large">Check Review</button>
+                        <br>        </br></br> -->
 
-                {% if word_count < 200 %}
-                <h4 style="color:rgb(255, 0, 0);"><strong>The minimum of word is 200, please input more! </strong></h4>
-                {% if prediction == 0 %}
-                <h4 style="color:rgb(255, 0, 0);"><strong>This is a Fake Review! </strong></h4>
-                {% elif prediction == 1 %}
-                <h4 style="color:rgb(1, 250, 134)"><strong>Don't worry, it's not a Fake Review </strong></h4>
-                {% endif %}
+                    {% if word_count is not none and word_count < 20 and word_count > 0 %}
+                        <h4 style="color:rgb(255, 0, 0);"><strong>The minimum of words is 20, please input more! </strong></h4>
+                    {% elif language is not none and language != 'en' %}
+                        <h4 style="color:rgb(255, 0, 0);"><strong>Please enter in English! </strong></h4>
+                    {% else %}
+                        {% if prediction == 0 %}
+                        <h4 style="color:rgb(255, 0, 0);"><strong>This is a Fake Review! </strong></h4>
+                        {% elif prediction == 1 %}
+                        <h4 style="color:rgb(1, 250, 134)"><strong>Don't worry, it's not a Fake Review </strong></h4>
+                        {% endif %}
+                    {% endif %}
                 <!-- This should be improved that if there's 0 reviews should not be visible -->
                 </form> </div>
         </section>
@@ -105,11 +128,11 @@ We help our customers detect which is the deceptive reviews and notify them as s
             <p style="width: 100%;">© 2021 | TECH-REX</p>
         </div>
     </footer><!-- End: Footer Dark -->
-    <script src="../static/js/jquery.min.js?h=89312d34339dcd686309fe284b3f226f"></script>
-    <script src="../static/bootstrap/js/bootstrap.min.js?h=ba42258394f86cd7822f0e850e2d60b1"></script>
+    <script src="../static/js/jquery.min.js"></script>
+    <script src="../static/bootstrap/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
-    <script src="../static/js/smoothproducts.min.js?h=975b2635c9a06eae9f47d6cae8158a12"></script>
-    <script src="../static/js/theme.js?h=417b03f5f0a4f9f27f8c248f532eb5af"></script>
+    <script src="../static/js/smoothproducts.min.js"></script>
+    <script src="../static/js/theme.js"></script>
 </body>
 
 </html>
