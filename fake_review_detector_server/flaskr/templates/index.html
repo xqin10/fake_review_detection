@@ -31,7 +31,7 @@ We help our customers detect which is the deceptive reviews and notify them as s
         <div class="container-fluid">
             <form id="header_search_box" action="{{ url_for('results')}}" method="POST">
                 <div class="d-inline-block" style="width: 600px;">
-                    <a href="/index.html">
+                    <a href="{{ url_for('home') }}">
                         <img class="img-fluid"
                             src="../static/img/Project%20Smartacus.png?h=138cc65f325fb87e72c3153d47e203ba" width="220"
                             height="90" />
@@ -49,17 +49,17 @@ We help our customers detect which is the deceptive reviews and notify them as s
             <div class="collapse navbar-collapse" id="navcol-1" style="max-width: 45%;width: 593px;">
                 <ul class="navbar-nav ml-auto" style="width: 1000px;max-width: 100%;font-size: 16px;">
                     <li class="nav-item" style="width: 150px;"><a
-                            class="nav-link d-xl-flex justify-content-xl-center active" href="/index.html"
+                            class="nav-link d-xl-flex justify-content-xl-center active" href="{{ url_for('home') }}"
                             style="width: 150px;font-size: 16px;">Home</a></li>
                     <li class="nav-item" style="width: 150px;font-size: 16px;"><a
-                            class="nav-link d-xl-flex justify-content-xl-center" href="/how-to-use.html"
+                            class="nav-link d-xl-flex justify-content-xl-center" href="{{ url_for('howtouse') }}"
                             style="width: 150px;font-size: 16px;">How IT WORKS</a></li>
                     <li class="nav-item" style="width: 150px;"><a class="nav-link d-xl-flex justify-content-xl-center"
-                            href="/features.html" style="width: 150px;font-size: 16px;">Features</a></li>
+                            href="{{ url_for('features') }}" style="width: 150px;font-size: 16px;">Features</a></li>
                     <li class="nav-item" style="width: 150px;"><a class="nav-link d-xl-flex justify-content-xl-center"
-                            href="/about-us.html" style="width: 150px;font-size: 16px;">About Us</a></li>
+                            href="{{ url_for('about') }}" style="width: 150px;font-size: 16px;">About Us</a></li>
                     <li class="nav-item" style="width: 150px;"><a
-                            class="nav-link text-center d-xl-flex justify-content-xl-center" href="/contact-us.html"
+                            class="nav-link text-center d-xl-flex justify-content-xl-center" href="{{ url_for('contact') }}"
                             style="width: 150px;font-size: 16px;text-align: center;">Contact Us</a></li>
                 </ul>
             </div>
@@ -97,10 +97,10 @@ We help our customers detect which is the deceptive reviews and notify them as s
                         <!-- <p style="width: 100%;font-size: 150%;font-weight: bold;">Identify fake reviews from the hotels, restaurants, cafes and bars.&nbsp;<strong>Save yourself from a horrible experience.</strong></p> -->
                         <form action="{{ url_for('predict')}}" method="POST">
                             <p
-                                style="text-align: center;max-width: 100%;width: 100%;font-size: 150%;font-weight: bold;">
-                            </p><textarea name="message"
+                                style="text-align: center;max-width: 100%;width: 100%;font-size: 150%;font-weight: bold;"></p>
+                            <textarea name="message"
                                 class="flex-grow-1 flex-shrink-1 flex-fill justify-content-center align-items-center align-content-center align-self-center flex-wrap"
-                                style="width: 100%;margin-left: 0%;margin-right: 0;margin-bottom: 5%;"
+                                style="width: 100%;margin-left: 0%;margin-right: 0%;margin-bottom: 2%;max-width: 60%;"
                                 placeholder="Paste a review here." rows="5"></textarea>
                             <button type="submit" class="btn btn-primary btn-block btn-large">Check Review</button>
                             <br> </br></br>
@@ -125,17 +125,14 @@ We help our customers detect which is the deceptive reviews and notify them as s
                 </section>
                 <h1 style="font-size: 200%;margin-bottom: 2%;font-weight: bold;margin-top: 0%;padding-top: 2%;">... or
                     simply paste a review below, to know more.</h1>
-                <!-- <textarea class="flex-grow-1 flex-shrink-1 flex-fill justify-content-center align-items-center align-content-center align-self-center flex-wrap" style="width: 100%;margin-left: 20%;margin-right: 20%;margin-bottom: 2%;max-width: 60%;" placeholder="Paste a review here." rows="5">
-                </textarea>
-                <a class="btn btn-outline-light btn-lg text-btn" role="button" href="/results.html" style="font-weight: bold;background: rgb(234,155,105);" target="_top">Analyze Review</a> -->
             </div>
             <div class="container"
                 style="text-align: center;margin-top: 0%;background: #ffffff;width: 100%;max-width: 90%;height: 100%;">
                 <h1 style="font-size: 200%;margin-bottom: 5%;font-weight: bold;padding-top: 2%;">Online reviews may be
                     fake, but their effects are real.</h1>
                 <h1 style="font-size: 200%;margin-bottom: 5%;font-weight: bold;">Total&nbsp;<span
-                        style="font-size: 150%;">153</span>&nbsp;reviews have been verified, with&nbsp;<span
-                        style="font-size: 150%;">53.2%</span>&nbsp;accuracy.</h1>
+                        style="font-size: 150%;">{{total_reviews_count}}</span>&nbsp;reviews have been verified, with&nbsp;<span
+                        style="font-size: 150%;">{{perc_true_review}}%</span>&nbsp;accuracy.</h1>
                 <picture><img
                         src="../static/img/Screen%20Shot%202021-04-19%20at%2012.15.44%20pm.png?h=0bdc03f3ec780ff5f5e397aeebd24dd5"
                         style="max-width: 40%;text-align: center;"></picture>
@@ -155,9 +152,9 @@ We help our customers detect which is the deceptive reviews and notify them as s
                                     <h3 style="color: var(--light);max-width: 100%;text-align: left;font-size: 24px;">
                                         Product</h3>
                                     <ul>
-                                        <li><a href="/index.html">Smartacus</a></li>
-                                        <li><a href="/how-to-use.html">How to Use</a></li>
-                                        <li><a href="/features.html">Features</a></li>
+                                        <li><a href="{{ url_for('home') }}">Smartacus</a></li>
+                                        <li><a href="{{ url_for('howtouse') }}">How to Use</a></li>
+                                        <li><a href="{{ url_for('features') }}">Features</a></li>
                                     </ul>
                                 </div><!-- End: About -->
                                 <!-- Start: About -->
@@ -165,9 +162,9 @@ We help our customers detect which is the deceptive reviews and notify them as s
                                     <h3 style="color: var(--light);max-width: 100%;text-align: left;font-size: 24px;">
                                         About</h3>
                                     <ul>
-                                        <li style="text-align: left;"><a href="/about-us.html">Company</a></li>
-                                        <li style="text-align: left;"><a href="/about-us.html">Team</a></li>
-                                        <li style="text-align: left;"><a href="/about-us.html">Legacy</a></li>
+                                        <li style="text-align: left;"><a href="{{ url_for('about') }}">Company</a></li>
+                                        <li style="text-align: left;"><a href="{{ url_for('about') }}">Team</a></li>
+                                        <li style="text-align: left;"><a href="{{ url_for('about') }}">Legacy</a></li>
                                     </ul>
                                 </div><!-- End: About -->
                                 <div class="col" style="background: #2c3032;"></div><!-- Start: Social Icons -->

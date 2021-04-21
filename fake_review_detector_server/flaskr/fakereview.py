@@ -31,40 +31,40 @@ users = {'test': {'pw': 'team_mp12'}}
 
 
 class User(UserMixin):
-  pass
+    pass
 
 @login_manager.user_loader
 def user_loader(username):
-  if username not in users:
-    return
+    if username not in users:
+      return
 
-  user = User()
-  user.id = username
-  return user
+    user = User()
+    user.id = username
+    return user
 
 @login_manager.request_loader
 def request_loader(request):
-  username = request.form.get('username')
-  if username not in users:
-    return
+    username = request.form.get('username')
+    if username not in users:
+      return
 
-  user = User()
-  user.id = username
+    user = User()
+    user.id = username
 
-  user.is_authenticated = request.form['pw'] == users[username]['pw']
+    user.is_authenticated = request.form['pw'] == users[username]['pw']
 
-  return user
+    return user
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-  if request.method == 'POST':
-    username = request.form.get('username')
-    if request.form.get('pw') == users[username]['pw']:
-      user = User()
-      user.id = username
-      flask_login.login_user(user)
-      return redirect(url_for('home'))
-  return render_template('login.html')
+    if request.method == 'POST':
+      username = request.form.get('username')
+      if request.form.get('pw') == users[username]['pw']:
+        user = User()
+        user.id = username
+        flask_login.login_user(user)
+        return redirect(url_for('home'))
+    return render_template('login.html')
 
 @app.route('/charts', methods=['GET', 'POST'])
 def charts():
@@ -151,7 +151,7 @@ def scrape(start_url):
   Param: 
     start_url
   Return:
-
+    List of review objects.
   """
   # start_url = 'https://www.tripadvisor.com.au/Restaurant_Review-g255100-d728473-Reviews-Sud_Food_and_Wine-Melbourne_Victoria.html'
   # split the url to different parts
@@ -205,43 +205,61 @@ def scrape(start_url):
 
 @app.route('/results',methods=['POST'])
 def results():
-  """
-  Do prediction with one url from pront-end.
-  """
-  if request.method == 'POST':
-    # url = request.form['urlinput']
-    # print("url: " + url)
-    # data = scrape(url)
-    # print(data)
-    # data = [d['review'] for d in data]
-    # print(data)
+    """
+    Do prediction with one url from pront-end.
+    """
+    if request.method == 'POST':
+      url = request.form['urlinput']
+      print("The requested url: " + url)
+      data = []
+      try:
+        scrape_data = scrape(url)
+        data = [d['review'] for d in scrape_data]
+      except requests.exceptions.ReadTimeout:
+        print("Scrape timeout!")
+      # print(data)
 
-    # my_prediction = 0
-    # y_prob_deceptive = 0
-    data = ['I travel for a living and have been for the last 7 years, internationally, domestically. I took my fiancé there for her birthday and it was by far the BEST service I have experienced anywhere! The food was absolutely excellent', 'A small little surprise on of all places King St. SUD takes you back to a different era where excellent service and amazing home style food thrives. Between us we had quail and scallops for entree, pasta and schnitzel for mains and the salted caramel...donuts for dessert. Every dish was very good to excellent. You really cannot fault anything about this place. Highly recommend.More', 'Have missed this dining experience so much. Exceptional food and service. Amazing traditional, fresh, well presented and tasty food. Open weekdays which great for that midweek meal.', "Big statement but this is easily the best Italian food I've had in Melbourne - everything was perfect. Lots of love put into the food, friendly and funny service, and great drinks/wine. We've already made a booking to return - highly recommend!", 'A small Italian restaurant which was packed on a Wednesday night so we just managed to grab the last table as we hadn’t booked. The service was warm and friendly, our waiter very knowledgeable about the wine (although only a few were available by the...glass) and the food was absolutely delicious - probably the best pasta I’ve ever eaten. A couple of small negatives, on a wet windy evening it was a little cold inside and the owners bonhomie was rather loud at points in the evening as he regaled a large table with a number of enthusiastic anecdotes!More', 'Fantastic little restaurant with super friendly service.  Food was excellent as was the wine.  Loads of atmosphere.  One restaurant in Melbourne not to be missed.', 'An intimate Italian restaurant situated King street Melbourne This small restaurant boasts fantastic seasonal produce, allowing the menu to constantly evolve daily but also an excel wine list to compliment any meal.', 'We had a lovely dinner at SUDS while we were in Melbourne. The hosts were friendly and informative and the food was delicious! We will definitely be recommending to others!', "I went here for lunch with my partner on the day we were flying back home. We were woefully underdressed in hiking/travel attire and almost didn't go in because it looked too fancy. The reviews here persuaded us and we're so happy they did. This...might just have been *the* best dining experience we've ever had. Our hosts were so welcoming (I cannot stress that enough!) and enthusiastically told us about the specials and wines. The food was absolutely amazing, as well! Best risotto ever!We're definitely coming back this year - though slightly better dressed ;)More", 'This is one of the best Italians in the heart of city! They stand as kings on King St. Fell in love with their food, collection of wines and amazing staff.']
-    if len(data) >= 1:
-      my_prediction = clf.predict(cv.transform(data).toarray())
-      y_prob = clf.predict_proba(cv.transform(data).toarray()) #return the labe prediction probability
-      y_prob_deceptive = y_prob[:,1]*100 #label prediction probability in percent
-    else:
-      my_prediction = [0]
-      y_prob_deceptive = [0]
+      # scrape_data = [{'review_title': 'I travel for a living and', 'review': 'I travel for a living and have been for the last 7 years, internationally, domestically. I took my fiancé there for her birthday and it was by far the BEST service I have experienced anywhere! The food was absolutely excellent', 'review_rating': '5', 'date_of_visit': 'February 2021', 'review_date': 'Reviewed 26 February 2021'},{'review_title': 'A fantastic place', 'review': 'A small little surprise on of all places King St. SUD takes you back to a different era where excellent service and amazing home style food thrives. Between us we had quail and scallops for entree, pasta and schnitzel for mains and the salted caramel...donuts for dessert. Every dish was very good to excellent. You really cannot fault anything about this place. Highly recommend.More', 'review_rating': '5', 'date_of_visit': 'January 2021', 'review_date': 'Reviewed 25 January 2021'},{'review_title': 'Great to be back!', 'review': 'Have missed this dining experience so much. Exceptional food and service. Amazing traditional, fresh, well presented and tasty food. Open weekdays which great for that midweek meal.', 'review_rating': '5', 'date_of_visit': 'November 2020', 'review_date': 'Reviewed 10 November 2020'},{'review_title': "Best Italian I've had in Melbourne", 'review': "Big statement but this is easily the best Italian food I've had in Melbourne - everything was perfect. Lots of love put into the food, friendly and funny service, and great drinks/wine. We've already made a booking to return - highly recommend!", 'review_rating': '5', 'date_of_visit': 'November 2020', 'review_date': 'Reviewed 5 November 2020'},{'review_title': 'Atmospheric, authentic Italian with good food', 'review': 'A small Italian restaurant which was packed on a Wednesday night so we just managed to grab the last table as we hadn’t booked. The service was warm and friendly, our waiter very knowledgeable about the wine (although only a few were available by the...glass) and the food was absolutely delicious - probably the best pasta I’ve ever eaten. A couple of small negatives, on a wet windy evening it was a little cold inside and the owners bonhomie was rather loud at points in the evening as he regaled a large table with a number of enthusiastic anecdotes!More', 'review_rating': '5', 'date_of_visit': 'February 2020', 'review_date': 'Reviewed 8 April 2020'},{'review_title': 'Absolutely excellent ', 'review': 'Fantastic little restaurant with super friendly service.  Food was excellent as was the wine.  Loads of atmosphere.  One restaurant in Melbourne not to be missed.', 'review_rating': '5', 'date_of_visit': 'February 2020', 'review_date': 'Reviewed 25 February 2020'},{'review_title': 'Small restaurant with personality', 'review': 'An intimate Italian restaurant situated King street Melbourne This small restaurant boasts fantastic seasonal produce, allowing the menu to constantly evolve daily but also an excel wine list to compliment any meal.', 'review_rating': '5', 'date_of_visit': 'January 2020', 'review_date': 'Reviewed 25 January 2020'},{'review_title': 'Fantastic experience!', 'review': 'We had a lovely dinner at SUDS while we were in Melbourne. The hosts were friendly and informative and the food was delicious! We will definitely be recommending to others!', 'review_rating': '5', 'date_of_visit': 'January 2020', 'review_date': 'Reviewed 20 January 2020'},{'review_title': 'So good!', 'review': "I went here for lunch with my partner on the day we were flying back home. We were woefully underdressed in hiking/travel attire and almost didn't go in because it looked too fancy. The reviews here persuaded us and we're so happy they did. This...might just have been *the* best dining experience we've ever had. Our hosts were so welcoming (I cannot stress that enough!) and enthusiastically told us about the specials and wines. The food was absolutely amazing, as well! Best risotto ever!We're definitely coming back this year - though slightly better dressed ;)More", 'review_rating': '5', 'date_of_visit': 'August 2019', 'review_date': 'Reviewed 19 January 2020'},{'review_title': 'This is one of the best Italians', 'review': 'This is one of the best Italians in the heart of city! They stand as kings on King St. Fell in love with their food, collection of wines and amazing staff.', 'review_rating': '5', 'date_of_visit': 'November 2019', 'review_date': 'Reviewed 12 January 2020'}]
+      # data = ['I travel for a living and have been for the last 7 years, internationally, domestically. I took my fiancé there for her birthday and it was by far the BEST service I have experienced anywhere! The food was absolutely excellent', 'A small little surprise on of all places King St. SUD takes you back to a different era where excellent service and amazing home style food thrives. Between us we had quail and scallops for entree, pasta and schnitzel for mains and the salted caramel...donuts for dessert. Every dish was very good to excellent. You really cannot fault anything about this place. Highly recommend.More', 'Have missed this dining experience so much. Exceptional food and service. Amazing traditional, fresh, well presented and tasty food. Open weekdays which great for that midweek meal.', "Big statement but this is easily the best Italian food I've had in Melbourne - everything was perfect. Lots of love put into the food, friendly and funny service, and great drinks/wine. We've already made a booking to return - highly recommend!", 'A small Italian restaurant which was packed on a Wednesday night so we just managed to grab the last table as we hadn’t booked. The service was warm and friendly, our waiter very knowledgeable about the wine (although only a few were available by the...glass) and the food was absolutely delicious - probably the best pasta I’ve ever eaten. A couple of small negatives, on a wet windy evening it was a little cold inside and the owners bonhomie was rather loud at points in the evening as he regaled a large table with a number of enthusiastic anecdotes!More', 'Fantastic little restaurant with super friendly service.  Food was excellent as was the wine.  Loads of atmosphere.  One restaurant in Melbourne not to be missed.', 'An intimate Italian restaurant situated King street Melbourne This small restaurant boasts fantastic seasonal produce, allowing the menu to constantly evolve daily but also an excel wine list to compliment any meal.', 'We had a lovely dinner at SUDS while we were in Melbourne. The hosts were friendly and informative and the food was delicious! We will definitely be recommending to others!', "I went here for lunch with my partner on the day we were flying back home. We were woefully underdressed in hiking/travel attire and almost didn't go in because it looked too fancy. The reviews here persuaded us and we're so happy they did. This...might just have been *the* best dining experience we've ever had. Our hosts were so welcoming (I cannot stress that enough!) and enthusiastically told us about the specials and wines. The food was absolutely amazing, as well! Best risotto ever!We're definitely coming back this year - though slightly better dressed ;)More", 'This is one of the best Italians in the heart of city! They stand as kings on King St. Fell in love with their food, collection of wines and amazing staff.']
+      if len(data) >= 1:
+        my_prediction = clf.predict(cv.transform(data).toarray())
+        y_prob = clf.predict_proba(cv.transform(data).toarray()) #return the labe prediction probability
+        y_prob_deceptive = y_prob[:,1]*100 #label prediction probability in percent
+      else:
+        return render_template('results.html',
+                                ret_code = 1,
+                                msg = 'Url Analyser failed, please use Review Analyser'
+                              )
 
-    # # db.insert_review(mysql,message, my_prediction[0])
-    total_reviews_count, true_reviews_count = db.get_review_stat(mysql)
+      fake_ret = []
+      not_fake_ret = []
+      fake_reviews_count = 0
+      true_reviews_count = 0
+      for i in range(len(data)):
+        ret = {
+                "review_title":scrape_data[i]["review_title"],
+                "review_rating":scrape_data[i]["review_rating"],
+                "review_date":scrape_data[i]["review_date"],
+                "review":data[i],
+                "deceptive_prob":str(round(y_prob_deceptive[i],2))+'%'
+              }
+        if my_prediction[i] == 0:
+          fake_ret.append(ret)
+          fake_reviews_count += 1
+        else:
+          not_fake_ret.append(ret)
+          true_reviews_count += 1
+        
+        db.insert_review(mysql,data[i], my_prediction[i])
 
-    # print(my_prediction)
-    # print(y_prob_deceptive)
-    # data = [message]
-
-  return render_template('results.html',
-                        #  word_count = res,
-                        #  language = main_language,
-                          prediction = my_prediction,
-                          deceptive_prob = y_prob_deceptive,
-                          total_reviews_count = total_reviews_count,
-                          perc_true_review = round(float(true_reviews_count/(total_reviews_count+0.01))*100,2) # calcualte percentage of true reviews.
-                        )
+    return render_template('results.html',
+                            ret_code = 0,
+                            msg = 'success',
+                            fake_ret = fake_ret,
+                            not_fake_ret = not_fake_ret,
+                            fake_reviews_count = fake_reviews_count,
+                            true_reviews_count = true_reviews_count
+                          )
 
 
 if __name__ == '__main__':
@@ -266,7 +284,6 @@ if __name__ == '__main__':
     app.secret_key = 'LUCKY'
 
     # Enter your database connection details below
-    env = 'debug' ## for test
     if env == 'production':
         app.config['MYSQL_HOST'] = config.get("db-prod", "dbhost")
         app.config['MYSQL_USER'] = config.get("db-prod", "dbuser")
