@@ -1,9 +1,13 @@
 import flask_login
+import re
+import spacy
+from spacy_langdetect import LanguageDetector
 from flask import Flask, render_template, url_for, request, session, redirect
 import pandas as pd
 import numpy as np
 import pickle
 from catboost import Pool,CatBoostClassifier
+from lightgbm import LGBMClassifier
 from flask_mysqldb import MySQL
 import db
 import configparser
@@ -82,19 +86,36 @@ def contact():
     return render_template("contact-us.html")
 
 @app.route('/predict',methods=['POST'])
-def predict():
+def predict(y_prob=None):
     """
-    Do prediction with one review from pront-end.
+    Do prediction with one review from front-end.
     """
     if request.method == 'POST':
         message = request.form['message']
         data = [message]
-        my_prediction = clf.predict(cv.transform(data).toarray())
-        db.insert_review(mysql,message, my_prediction[0])
-        total_reviews_count, true_reviews_count = db.get_review_stat(mysql)
+        # to count words in string
+        res = len(re.findall(r'\w+', data))
 
+        # document level language detection. Think of it like average language of the document!
+        nlp = spacy.load('en_core_web_sm')
+        nlp.add_pipe(LanguageDetector(), name='language_detector', last=True)
+        doc = nlp(data)
+        main_language = doc._.language["language"]
+        #print(doc._.language)
+
+        # the word limitation
+        if res >= 200 and main_language == "en":
+            my_prediction = clf.predict(cv.transform(data).toarray())
+            y_prob = clf.predict_proba(cv.transform(data).toarray()) #return the labe prediction probability
+            y_prob_deceptive = y_prob[:,1]*100 #label prediction probability in percent
+            db.insert_review(mysql,message, my_prediction[0])
+            total_reviews_count, true_reviews_count = db.get_review_stat(mysql)
+            #answer = "The minimum of word is 200, please input more"
     return render_template('index.html',
+                           word_count = res,
+                           language = main_language,
                            prediction = my_prediction,
+                           deceptive_prob = y_prob_deceptive,
                            total_reviews_count = total_reviews_count,
                            perc_true_review = round(float(true_reviews_count/(total_reviews_count+0.01))*100,2) # calcualte percentage of true reviews.
                            )
@@ -106,9 +127,10 @@ if __name__ == '__main__':
     print("Loading in {} environment ....".format(env))
 
     # Read resources
-    filename = 'resources/CatBoostClassifier.pkl'
+    #filename = 'resources/CatBoostClassifier.pkl'
+    filename = 'resources/lightBGM.pkl'
     clf = pickle.load(open(filename,'rb'))
-    cv = pickle.load(open('resources/transform.pkl','rb'))
+    cv = pickle.load(open('resources/cvtransform.pkl','rb'))
 
     # Read config.init
     config = configparser.ConfigParser()
