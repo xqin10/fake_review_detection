@@ -7,3 +7,6 @@ gunicorn
 catboost
 flask_mysqldb
 configparser
+lightgbm
+spacy 
+spacy_langdetect

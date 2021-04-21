@@ -44,9 +44,21 @@
                 }
             }]
         };
- 
-        // Display
-        myChart.setOption(option);
     </script>
+    // Display
+    myChart.setOption(option);
+
+    <table>
+        <tbody>
+        {% for p in prediction %}
+            <tr>
+                <td>{{ p }}    </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {{total_reviews_count}}
+    {{perc_true_review}}
 </body>
 </html>

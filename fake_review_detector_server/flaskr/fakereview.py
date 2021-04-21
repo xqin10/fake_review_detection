@@ -7,6 +7,8 @@ from flask import Flask, render_template, url_for, request, session, redirect
 import pandas as pd
 import numpy as np
 import pickle
+import _pickle as cPickle
+import bz2
 from catboost import Pool,CatBoostClassifier
 from lightgbm import LGBMClassifier
 from flask_mysqldb import MySQL
@@ -184,7 +186,7 @@ def scrape(start_url):
           urls.append(url)
       # extract all reviews from all urls and store in reviewArr(json objects)
       for url in urls:
-          response = requests.get(url,timeout=5)
+          response = requests.get(url,timeout=10)
           content = BeautifulSoup(response.content,"html.parser")
           for review in content.findAll('div', attrs={"class": "reviewSelector"}):
               reviewObject = {
@@ -201,47 +203,45 @@ def scrape(start_url):
   return reviewArr
 
 
-@app.route('/url_predict',methods=['POST'])
-def url_predict():
-    """
-    Do prediction with one url from pront-end.
-    """
-    if request.method == 'POST':
-        url = request.form['message']
-        data = scrape(url)
-        my_prediction = clf.predict(cv.transform(data).toarray())
-        y_prob = clf.predict_proba(cv.transform(data).toarray()) #return the labe prediction probability
-        y_prob_deceptive = y_prob[:,1]*100 #label prediction probability in percent
-        # db.insert_review(mysql,message, my_prediction[0])
-        total_reviews_count, true_reviews_count = db.get_review_stat(mysql)
-        # data = [message]
+@app.route('/results',methods=['POST'])
+def results():
+  """
+  Do prediction with one url from pront-end.
+  """
+  if request.method == 'POST':
+    # url = request.form['urlinput']
+    # print("url: " + url)
+    # data = scrape(url)
+    # print(data)
+    # data = [d['review'] for d in data]
+    # print(data)
 
-        # to count words in string
-        # res = len(re.findall(r'\w+', data))
+    # my_prediction = 0
+    # y_prob_deceptive = 0
+    data = ['I travel for a living and have been for the last 7 years, internationally, domestically. I took my fiancé there for her birthday and it was by far the BEST service I have experienced anywhere! The food was absolutely excellent', 'A small little surprise on of all places King St. SUD takes you back to a different era where excellent service and amazing home style food thrives. Between us we had quail and scallops for entree, pasta and schnitzel for mains and the salted caramel...donuts for dessert. Every dish was very good to excellent. You really cannot fault anything about this place. Highly recommend.More', 'Have missed this dining experience so much. Exceptional food and service. Amazing traditional, fresh, well presented and tasty food. Open weekdays which great for that midweek meal.', "Big statement but this is easily the best Italian food I've had in Melbourne - everything was perfect. Lots of love put into the food, friendly and funny service, and great drinks/wine. We've already made a booking to return - highly recommend!", 'A small Italian restaurant which was packed on a Wednesday night so we just managed to grab the last table as we hadn’t booked. The service was warm and friendly, our waiter very knowledgeable about the wine (although only a few were available by the...glass) and the food was absolutely delicious - probably the best pasta I’ve ever eaten. A couple of small negatives, on a wet windy evening it was a little cold inside and the owners bonhomie was rather loud at points in the evening as he regaled a large table with a number of enthusiastic anecdotes!More', 'Fantastic little restaurant with super friendly service.  Food was excellent as was the wine.  Loads of atmosphere.  One restaurant in Melbourne not to be missed.', 'An intimate Italian restaurant situated King street Melbourne This small restaurant boasts fantastic seasonal produce, allowing the menu to constantly evolve daily but also an excel wine list to compliment any meal.', 'We had a lovely dinner at SUDS while we were in Melbourne. The hosts were friendly and informative and the food was delicious! We will definitely be recommending to others!', "I went here for lunch with my partner on the day we were flying back home. We were woefully underdressed in hiking/travel attire and almost didn't go in because it looked too fancy. The reviews here persuaded us and we're so happy they did. This...might just have been *the* best dining experience we've ever had. Our hosts were so welcoming (I cannot stress that enough!) and enthusiastically told us about the specials and wines. The food was absolutely amazing, as well! Best risotto ever!We're definitely coming back this year - though slightly better dressed ;)More", 'This is one of the best Italians in the heart of city! They stand as kings on King St. Fell in love with their food, collection of wines and amazing staff.']
+    if len(data) >= 1:
+      my_prediction = clf.predict(cv.transform(data).toarray())
+      y_prob = clf.predict_proba(cv.transform(data).toarray()) #return the labe prediction probability
+      y_prob_deceptive = y_prob[:,1]*100 #label prediction probability in percent
+    else:
+      my_prediction = [0]
+      y_prob_deceptive = [0]
 
-        # # document level language detection. Think of it like average language of the document!
-        # nlp = spacy.load('en_core_web_sm')
-        # nlp.add_pipe(LanguageDetector(), name='language_detector', last=True)
-        # doc = nlp(data)
-        # main_language = doc._.language["language"]
-        # #print(doc._.language)
+    # # db.insert_review(mysql,message, my_prediction[0])
+    total_reviews_count, true_reviews_count = db.get_review_stat(mysql)
 
-        # the word limitation
-        # if res >= 200 and main_language == "en":
-        #     my_prediction = clf.predict(cv.transform(data).toarray())
-        #     y_prob = clf.predict_proba(cv.transform(data).toarray()) #return the labe prediction probability
-        #     y_prob_deceptive = y_prob[:,1]*100 #label prediction probability in percent
-        #     db.insert_review(mysql,message, my_prediction[0])
-        #     total_reviews_count, true_reviews_count = db.get_review_stat(mysql)
-        #     #answer = "The minimum of word is 200, please input more"
-    return render_template('charts.html',
-                          #  word_count = res,
-                          #  language = main_language,
-                           prediction = my_prediction,
-                           deceptive_prob = y_prob_deceptive,
-                           total_reviews_count = total_reviews_count,
-                           perc_true_review = round(float(true_reviews_count/(total_reviews_count+0.01))*100,2) # calcualte percentage of true reviews.
-                           )
+    # print(my_prediction)
+    # print(y_prob_deceptive)
+    # data = [message]
+
+  return render_template('results.html',
+                        #  word_count = res,
+                        #  language = main_language,
+                          prediction = my_prediction,
+                          deceptive_prob = y_prob_deceptive,
+                          total_reviews_count = total_reviews_count,
+                          perc_true_review = round(float(true_reviews_count/(total_reviews_count+0.01))*100,2) # calcualte percentage of true reviews.
+                        )
 
 
 if __name__ == '__main__':
@@ -253,8 +253,10 @@ if __name__ == '__main__':
     filename = 'resources/CatBoostClassifier.pkl'
     # filename = 'resources/lightBGM.pkl'
     clf = pickle.load(open(filename,'rb'))
-    # cv = pickle.load(open('resources/cvtransform.pkl','rb'))
-    cv = pickle.load(open('resources/transform.pkl','rb'))
+
+    # cv = bz2.BZ2File(open('resources/cvtransform.pkl.pbz2', 'rb'))
+    # cv = cPickle.load(cv)
+    cv = pickle.load(open('resources/transform.pkl', 'rb'))
 
     # Read config.init
     config = configparser.ConfigParser()
@@ -264,6 +266,7 @@ if __name__ == '__main__':
     app.secret_key = 'LUCKY'
 
     # Enter your database connection details below
+    env = 'debug' ## for test
     if env == 'production':
         app.config['MYSQL_HOST'] = config.get("db-prod", "dbhost")
         app.config['MYSQL_USER'] = config.get("db-prod", "dbuser")
