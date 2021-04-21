@@ -9,6 +9,8 @@ import db
 import configparser
 import math
 from flask_login import LoginManager, UserMixin
+import requests             
+from bs4 import BeautifulSoup
 
 app = Flask(__name__)
 
@@ -57,6 +59,14 @@ def index():
       return redirect(url_for('home'))
   return render_template('login.html')
 
+@app.route('/charts', methods=['GET', 'POST'])
+def charts():
+  total_reviews_count, true_reviews_count = db.get_review_stat(mysql)
+  return render_template('charts.html',
+                          fake_reviews_count = total_reviews_count-true_reviews_count,
+                          true_reviews_count = true_reviews_count
+                        )
+
 @app.route('/home')
 def home():
     total_reviews_count, true_reviews_count = db.get_review_stat(mysql)
@@ -98,6 +108,79 @@ def predict():
                            total_reviews_count = total_reviews_count,
                            perc_true_review = round(float(true_reviews_count/(total_reviews_count+0.01))*100,2) # calcualte percentage of true reviews.
                            )
+
+@app.route('/url_predict',methods=['POST'])
+def url_predict():
+    """
+    Do prediction with one review from pront-end.
+    """
+    if request.method == 'POST':
+        message = request.form['message']
+        data = [message]
+        my_prediction = clf.predict(cv.transform(data).toarray())
+        db.insert_review(mysql,message, my_prediction[0])
+        total_reviews_count, true_reviews_count = db.get_review_stat(mysql)
+
+    return render_template('index.html',
+                           prediction = my_prediction,
+                           total_reviews_count = total_reviews_count,
+                           perc_true_review = round(float(true_reviews_count/(total_reviews_count+0.01))*100,2) # calcualte percentage of true reviews.
+                           )
+
+def scrape(start_url):
+  # start_url = 'https://www.tripadvisor.com.au/Restaurant_Review-g255100-d728473-Reviews-Sud_Food_and_Wine-Melbourne_Victoria.html'
+  # split the url to different parts
+  url_parts = start_url.split('-Reviews-')
+  #url_parts[0]
+  #url_parts[1]
+  #url_pattern = url_parts[0]+'-Reviews-'+'or{}-'+url_parts[1]
+  #print(url_pattern)
+  urls = []
+  reviewArr = []
+  if "Hotel_Review" in start_url:
+      # find all URLS of reviews (define how many pages are needed, here we set it for 1 page) for this hotel
+      for page in range(0,1):
+          url = url_parts[0]+'-Reviews-'+'or{}-'.format(5*page)+url_parts[1]
+          print(url)
+          urls.append(url)
+      # extract all reviews from all urls and store in reviewArr(json objects)
+      for url in urls:
+          response = requests.get(url,timeout=10)
+          content = BeautifulSoup(response.content,"html.parser")
+          for review in content.findAll('div', attrs={"class": "_2wrUUKlw _3hFEdNs8"}):
+              reviewObject = {
+                  "review_title": review.find('div', attrs={"class": "glasR4aX"}).text,
+                  "review": review.find('q', attrs={"class": "IRsGHoPm"}).get_text(separator='\n'),
+                  "review_rating":str(review.find('div', attrs={"class": "nf9vGX55"}).find('span'))[-11:-10],
+                  "date_of_stay":review.find('span', attrs={"class": "_34Xs-BQm"}).text[14:],
+                  "review_date": review.find('div', attrs={"class": "_2fxQ4TOx"}).text}
+              print(reviewObject)
+              reviewArr.append(reviewObject)
+      # extra elements from json object in array
+      #for obj in reviewArr:
+          #print(obj.get("review"))
+  elif "Restaurant_Review" in start_url:
+      # find all URLS of reviews (define how many pages are needed, here we set it for 1 pages) for this restaurant
+      for page in range(0,1):
+          url = url_parts[0]+'-Reviews-'+'or{}-'.format(10*page)+url_parts[1]
+          print(url)
+          urls.append(url)
+      # extract all reviews from all urls and store in reviewArr(json objects)
+      for url in urls:
+          response = requests.get(url,timeout=5)
+          content = BeautifulSoup(response.content,"html.parser")
+          for review in content.findAll('div', attrs={"class": "reviewSelector"}):
+              reviewObject = {
+                  "review_title": review.find('span', attrs={"class": "noQuotes"}).text,
+                  "review": review.find('p', attrs={"class": "partial_entry"}).text.replace("\n", ""),
+                  "review_rating":str(review.find('div',attrs={"class": "ui_column is-9"}).find('span'))[-11:-10],
+                  "date_of_visit":review.find('div', attrs={"class": "prw_rup prw_reviews_stay_date_hsx"}).text[15:],
+                  "review_date": review.find('span', attrs={"class": "ratingDate"}).text.strip()
+              }
+              print(reviewObject)
+              reviewArr.append(reviewObject)
+  else: 
+      print("Please only paste URL of hotel or restaurant review from Trip Advisor!")
 
 
 if __name__ == '__main__':
