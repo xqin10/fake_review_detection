@@ -6,6 +6,8 @@ from flask import Flask, render_template, url_for, request, session, redirect
 import pandas as pd
 import numpy as np
 import pickle
+import _pickle as cPickle
+import bz2
 from catboost import Pool,CatBoostClassifier
 from lightgbm import LGBMClassifier
 from flask_mysqldb import MySQL
@@ -130,7 +132,11 @@ if __name__ == '__main__':
     #filename = 'resources/CatBoostClassifier.pkl'
     filename = 'resources/lightBGM.pkl'
     clf = pickle.load(open(filename,'rb'))
-    cv = pickle.load(open('resources/cvtransform.pkl','rb'))
+   
+    cv = bz2.BZ2File(open('resources/cvtransform.pkl', ‘rb’) #decompress the compressed pickle
+    cv = cPickle.load(cv)
+     
+    #cv = pickle.load(open('resources/cvtransform.pkl','rb'))
 
     # Read config.init
     config = configparser.ConfigParser()
