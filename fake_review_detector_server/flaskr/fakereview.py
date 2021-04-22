@@ -211,6 +211,7 @@ def results():
     Do prediction with one url from pront-end.
     """
     if request.method == 'POST':
+
       url = request.form['urlinput']
       print("The requested url: " + url)
       data = []
@@ -221,11 +222,21 @@ def results():
         print("Scrape timeout!")
       # print(data)
 
+      shop_name = ''
       if len(data) >= 1:
         my_prediction = clf.predict(cv.transform(data).toarray())
         y_prob = clf.predict_proba(cv.transform(data).toarray()) #return the labe prediction probability
-        y_prob_deceptive = y_prob[:,1]*100 #label prediction probability in percent
+        y_prob_deceptive_4_real = y_prob[:,1]*100 #label prediction probability in percent
+        y_prob_deceptive_4_fake = y_prob[:,0]*100 #label prediction probability in percent
         print(y_prob)
+        try:
+          shop_names = ((url.split('-Reviews-'))[1].split('-'))
+          if len(shop_names) == 2:
+            shop_name = shop_names[0]
+          elif len(shop_name) == 3:
+            shop_name = shop_names[1]
+        except BaseException:
+          print("Failed to extract shop_name from url!", url)
       else:
         return render_template('results.html',
                                 ret_code = 1,
@@ -236,24 +247,30 @@ def results():
       not_fake_ret = []
       fake_reviews_count = 0
       true_reviews_count = 0
+      # The thredhold for fake probability to tell one is a fake.
+      thredhold = 65
       for i in range(len(data)):
         ret = {
                 "review_title":scrape_data[i]["review_title"],
                 "review_rating":scrape_data[i]["review_rating"],
                 "review_date":scrape_data[i]["review_date"],
-                "review":data[i],
-                "deceptive_prob":str(round(y_prob_deceptive[i],2))+'%'
+                "review":data[i]
+                # "deceptive_prob":str(round(y_prob_deceptive[i],2))+'%'
               }
-        if my_prediction[i] == 0:
+        # if my_prediction[i] == 0:
+        if y_prob_deceptive_4_fake[i] > thredhold:
+          ret['deceptive_prob'] = str(round(y_prob_deceptive_4_fake[i],2))+'%'
           fake_ret.append(ret)
           fake_reviews_count += 1
         else:
+          ret['real_prob'] = str(round(y_prob_deceptive_4_real[i],2))+'%'
           not_fake_ret.append(ret)
           true_reviews_count += 1
         
         db.insert_review(mysql,data[i], my_prediction[i])
 
     return render_template('results.html',
+                            shop_name = shop_name,
                             ret_code = 0,
                             msg = 'success',
                             fake_ret = fake_ret,

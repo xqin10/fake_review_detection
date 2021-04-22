@@ -53,7 +53,8 @@ We help our customers detect which is the deceptive reviews and notify them as s
                     <li class="nav-item" style="width: 150px;"><a class="nav-link d-xl-flex justify-content-xl-center"
                             href="{{ url_for('about')}}" style="width: 150px;font-size: 16px;">About Us</a></li>
                     <li class="nav-item" style="width: 150px;"><a
-                            class="nav-link text-center d-xl-flex justify-content-xl-center" href="{{ url_for('contact')}}"
+                            class="nav-link text-center d-xl-flex justify-content-xl-center"
+                            href="{{ url_for('contact')}}"
                             style="width: 150px;font-size: 16px;text-align: center;">Contact Us</a></li>
                 </ul>
             </div>
@@ -66,22 +67,34 @@ We help our customers detect which is the deceptive reviews and notify them as s
         </div><!-- Start: Highlight Clean -->
 
         {% if ret_code == 1 %}
-            </br>
-            <h1 style="margin-left: 10%;">{{ msg }}</h1>
+        </br>
+        <h1 style="margin-left: 10%;">{{ msg }}</h1>
         {% else %}
         <section class="highlight-clean">
             <div class="container">
                 <!-- Start: Intro -->
                 <div class="intro" style="max-width: 100%;">
-                    <h2 class="text-center" style="max-width: 100%;">Analysis Report</h2>
+                    <h2 class="text-center" style="max-width: 100%;">Review Intigrity Report</h2>
                     <p class="text-center" style="max-width: 100%;width: 100%;text-align: justify;"></p>
                 </div><!-- End: Intro -->
                 <!-- Start: Buttons -->
                 <div class="buttons"></div><!-- End: Buttons -->
             </div>
-            <h1 style="margin-left: 0%;text-align: center;padding-bottom: 5%;">Overview</h1>
-            <div style="max-width: 30%;margin-left: 10%;margin-right: 10%;">
-                <div id="main" style="width: 600px;height:400px;"></div>
+            <h3 style="margin-left: 0%;text-align: center;padding-bottom: 5%;">for hotel <span class="text-secondary">{{shop_name}}</span></h3>
+            <div class="d-flex p-3 justify-content-center mb-3 ml-auto">
+                <div class="p-2 d-flex flex-column mb-3">
+                    <div class="p2 bold"><strong>Total Reviews</strong></div>
+                    <div class="p-2">{{ fake_reviews_count+true_reviews_count }}</div>
+                </div>
+                <div class="p-2 d-flex flex-column mb-3">
+                    <div id="main" style="width: 600px;height:400px;"></div>
+                </div>
+                <div class="p-2 d-flex flex-column mb-3">
+                    <div class="p2 bold"><strong>Fake Reviews</strong></div>
+                    <div class="p-2">{{ fake_reviews_count }}</div>
+                    <div class="p2 bold"><strong>Real Reviews</strong></div>
+                    <div class="p-2">{{ true_reviews_count }}</div>
+                </div>
             </div>
             <div style="max-width: 30%;margin-left: 35%;"></div>
             <h1 style="margin-left: 10%;">Fake Reviews</h1>
@@ -111,7 +124,7 @@ We help our customers detect which is the deceptive reviews and notify them as s
                         <td>
                             <font size="2">{{r.review_date}}</font>
                             <h4>{{r.review_title}}</h4>
-                            <font size="2">Probability: {{ r.deceptive_prob }} Rating: {{r.review_rating}}</font>
+                            <font size="2">Probability: {{ r.real_prob }} Rating: {{r.review_rating}}</font>
                             <div class="alert alert-info" role="alert">
                                 {{ r.review }}
                             </div>
@@ -123,7 +136,7 @@ We help our customers detect which is the deceptive reviews and notify them as s
         </section><!-- End: Highlight Clean -->
         {% endif %}
     </section><!-- Start: Footer Dark -->
-    
+
     <footer class="page-footer dark" style="width: 100%;">
         <div class="container" style="width: 100%;">
             <div class="row" style="width: 100%;">
@@ -172,7 +185,7 @@ We help our customers detect which is the deceptive reviews and notify them as s
 
         option = {
             title: {
-                text: 'Fake Review Probability',
+                text: 'Fake Review Proportion',
                 subtext: 'for this hotel',
                 left: 'center'
             },
@@ -181,16 +194,16 @@ We help our customers detect which is the deceptive reviews and notify them as s
             },
             legend: {
                 orient: 'vertical',
-                left: 'left',
+                left: 'bottom',
             },
             series: [
                 {
-                    name: 'reviews',
+                    name: 'Reviews',
                     type: 'pie',
                     radius: '50%',
                     data: [
-                        { value: '{{fake_reviews_count}}', name: 'Fake' },
-                        { value: '{{true_reviews_count}}', name: 'Real' }
+                        { value: '{{fake_reviews_count}}', name: 'Fake ({{fake_reviews_count}})' },
+                        { value: '{{true_reviews_count}}', name: 'Real ({{true_reviews_count}})' }
                     ],
                     emphasis: {
                         itemStyle: {
