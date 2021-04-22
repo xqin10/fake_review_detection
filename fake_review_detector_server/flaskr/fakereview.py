@@ -164,10 +164,13 @@ def scrape(start_url):
   reviewArr = []
   if "Hotel_Review" in start_url:
       # find all URLS of reviews (define how many pages are needed, here we set it for 1 page) for this hotel
-      for page in range(0,1):
-          url = url_parts[0]+'-Reviews-'+'or{}-'.format(5*page)+url_parts[1]
-          print(url)
-          urls.append(url)
+      # for page in range(0,1):
+      #     url = url_parts[0]+'-Reviews-'+'or{}-'.format(5*page)+url_parts[1]
+      #     print(url)
+      #     urls.append(url)
+      url = start_url
+      # print(url)
+      urls.append(url)
       # extract all reviews from all urls and store in reviewArr(json objects)
       for url in urls:
           response = requests.get(url,timeout=10)
@@ -184,10 +187,13 @@ def scrape(start_url):
 
   elif "Restaurant_Review" in start_url:
       # find all URLS of reviews (define how many pages are needed, here we set it for 1 pages) for this restaurant
-      for page in range(0,1):
-          url = url_parts[0]+'-Reviews-'+'or{}-'.format(10*page)+url_parts[1]
-          print(url)
-          urls.append(url)
+      # for page in range(0,1):
+      #     url = url_parts[0]+'-Reviews-'+'or{}-'.format(10*page)+url_parts[1]
+      #     print(url)
+      #     urls.append(url)
+      url = start_url
+      # print(url)
+      urls.append(url)
       # extract all reviews from all urls and store in reviewArr(json objects)
       for url in urls:
           response = requests.get(url,timeout=10)
