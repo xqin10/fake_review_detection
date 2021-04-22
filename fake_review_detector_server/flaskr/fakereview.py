@@ -83,7 +83,8 @@ def home():
                             total_reviews_count = total_reviews_count,
                             true_reviews_count = true_reviews_count,
                             fake_reviews_count = total_reviews_count - true_reviews_count,
-                            perc_true_review = round(float(true_reviews_count/(total_reviews_count+0.01))*100,2) # calcualte percentage of true reviews.
+                            perc_true_review = round(float(true_reviews_count/(total_reviews_count+0.01))*100,2), # calcualte percentage of true reviews.
+                            perc_fake_review = round((1-float(true_reviews_count/(total_reviews_count+0.01)))*100,2)
                           )
 
 @app.route("/features")
@@ -144,7 +145,8 @@ def predict(y_prob=None):
                            total_reviews_count = total_reviews_count,
                            true_reviews_count = true_reviews_count,
                            fake_reviews_count = total_reviews_count - true_reviews_count,
-                           perc_true_review = round(float(true_reviews_count/(total_reviews_count+0.01))*100,2) # calcualte percentage of true reviews.
+                           perc_true_review = round(float(true_reviews_count/(total_reviews_count+0.01))*100,2), # calcualte percentage of true reviews.
+                           perc_fake_review = round((1-float(true_reviews_count/(total_reviews_count+0.01)))*100,2)
                            )
 
 def scrape(start_url):
@@ -163,11 +165,6 @@ def scrape(start_url):
   urls = []
   reviewArr = []
   if "Hotel_Review" in start_url:
-      # find all URLS of reviews (define how many pages are needed, here we set it for 1 page) for this hotel
-      # for page in range(0,1):
-      #     url = url_parts[0]+'-Reviews-'+'or{}-'.format(5*page)+url_parts[1]
-      #     print(url)
-      #     urls.append(url)
       url = start_url
       # print(url)
       urls.append(url)
@@ -186,11 +183,6 @@ def scrape(start_url):
               reviewArr.append(reviewObject)
 
   elif "Restaurant_Review" in start_url:
-      # find all URLS of reviews (define how many pages are needed, here we set it for 1 pages) for this restaurant
-      # for page in range(0,1):
-      #     url = url_parts[0]+'-Reviews-'+'or{}-'.format(10*page)+url_parts[1]
-      #     print(url)
-      #     urls.append(url)
       url = start_url
       # print(url)
       urls.append(url)
@@ -233,6 +225,7 @@ def results():
         my_prediction = clf.predict(cv.transform(data).toarray())
         y_prob = clf.predict_proba(cv.transform(data).toarray()) #return the labe prediction probability
         y_prob_deceptive = y_prob[:,1]*100 #label prediction probability in percent
+        print(y_prob)
       else:
         return render_template('results.html',
                                 ret_code = 1,
