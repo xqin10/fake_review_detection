@@ -29,28 +29,30 @@ We help our customers detect which is the deceptive reviews and notify them as s
     <nav class="navbar navbar-light navbar-expand-lg fixed-top bg-white clean-navbar"
         style="background: rgb(55,166,246);filter: saturate(90%);max-width: 100%;padding-right: 10%;padding-left: 10%;">
         <div class="container-fluid">
-            <div class="d-inline-block" style="width: 600px;"><a href="/index.html"><img class="img-fluid"
-                        src="../static/img/Project%20Smartacus.png?h=138cc65f325fb87e72c3153d47e203ba" width="220"
-                        height="90" /></a><input type="text" placeholder="https://www." name="urlinput"><a
-                    class="btn btn-outline-light btn-sm d-inline-block" role="button" href="/results.html"
-                    style="/*font-weight: bold;*/background: rgb(234,155,105);margin-top: 0%;padding-top: 6px;padding-bottom: 4px;"
-                    target="_top">Analyze</a></div><button data-toggle="collapse" class="navbar-toggler"
-                data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span
-                    class="navbar-toggler-icon"></span></button>
+            <form id="header_search_box" action="{{ url_for('results')}}" method="POST">
+                <div class="d-inline-block" style="width: 600px;"><a href="{{ url_for('home')}}"><img class="img-fluid"
+                            src="../static/img/Project%20Smartacus.png?h=138cc65f325fb87e72c3153d47e203ba" width="220"
+                            height="90" /></a><input type="text" placeholder="https://www." name="urlinput"><a
+                        class="btn btn-outline-light btn-sm d-inline-block" role="button"
+                        onclick="document:header_search_box.submit()"
+                        style="/*font-weight: bold;*/background: rgb(234,155,105);margin-top: 0%;padding-top: 6px;padding-bottom: 4px;"
+                        target="_top">Analyze</a></div><button data-toggle="collapse" class="navbar-toggler"
+                    data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span
+                        class="navbar-toggler-icon"></span></button>
+            </form>
             <div class="collapse navbar-collapse" id="navcol-1" style="max-width: 45%;width: 593px;">
                 <ul class="navbar-nav ml-auto" style="width: 1000px;max-width: 100%;font-size: 16px;">
                     <li class="nav-item" style="width: 150px;"><a class="nav-link d-xl-flex justify-content-xl-center"
-                            href="/index.html" style="width: 150px;font-size: 16px;">Home</a></li>
+                            href="{{ url_for('home')}}" style="width: 150px;font-size: 16px;">Home</a></li>
                     <li class="nav-item" style="width: 150px;font-size: 16px;"><a
-                            class="nav-link d-xl-flex justify-content-xl-center" href="/how-to-use.html"
+                            class="nav-link d-xl-flex justify-content-xl-center" href="{{ url_for('howtouse')}}"
                             style="width: 150px;font-size: 16px;">How IT WORKS</a></li>
-                    <li class="nav-item" style="width: 150px;"><a
-                            class="nav-link d-xl-flex justify-content-xl-center active" href="/features.html"
-                            style="width: 150px;font-size: 16px;">Features</a></li>
                     <li class="nav-item" style="width: 150px;"><a class="nav-link d-xl-flex justify-content-xl-center"
-                            href="/about-us.html" style="width: 150px;font-size: 16px;">About Us</a></li>
+                            href="{{ url_for('features')}}" style="width: 150px;font-size: 16px;">Features</a></li>
+                    <li class="nav-item" style="width: 150px;"><a class="nav-link d-xl-flex justify-content-xl-center"
+                            href="{{ url_for('about')}}" style="width: 150px;font-size: 16px;">About Us</a></li>
                     <li class="nav-item" style="width: 150px;"><a
-                            class="nav-link text-center d-xl-flex justify-content-xl-center" href="/contact-us.html"
+                            class="nav-link text-center d-xl-flex justify-content-xl-center" href="{{ url_for('contact')}}"
                             style="width: 150px;font-size: 16px;text-align: center;">Contact Us</a></li>
                 </ul>
             </div>
@@ -85,34 +87,32 @@ We help our customers detect which is the deceptive reviews and notify them as s
                 </div>
             </div>
         </section><!-- Start: Footer Dark -->
-        <footer class="page-footer dark">
-            <div class="container">
-                <div class="row">
-                    <div class="col">
+        <footer class="page-footer dark" style="width: 100%;">
+            <div class="container" style="width: 100%;">
+                <div class="row" style="width: 100%;">
+                    <div class="col" style="width: 100%;">
                         <!-- Start: Footer Clean -->
-                        <footer class="footer-clean" style="background: #2d2f32;font-size: 16px;">
+                        <footer class="footer-clean" style="background: #2d2f32;font-size: 16px;width: 100%;">
                             <div class="container">
                                 <div class="row text-left" style="margin-right: 0;margin-left: 0;width: 100%;">
                                     <!-- Start: About -->
                                     <div class="col-sm-4 col-md-3 item" style="text-align: left;font-size: 16px;">
-                                        <h3
-                                            style="color: var(--light);max-width: 100%;text-align: left;font-size: 24px;">
+                                        <h3 style="color: var(--light);max-width: 100%;text-align: left;font-size: 24px;">
                                             Product</h3>
                                         <ul>
-                                            <li><a href="/index.html">Smartacus</a></li>
-                                            <li><a href="/how-to-use.html">How to Use</a></li>
-                                            <li><a href="/features.html">Features</a></li>
+                                            <li><a href="{{ url_for('home')}}">Smartacus</a></li>
+                                            <li><a href="{{ url_for('howtouse')}}">How to Use</a></li>
+                                            <li><a href="{{ url_for('features')}}">Features</a></li>
                                         </ul>
                                     </div><!-- End: About -->
                                     <!-- Start: About -->
                                     <div class="col-sm-4 col-md-3 item">
-                                        <h3
-                                            style="color: var(--light);max-width: 100%;text-align: left;font-size: 24px;">
+                                        <h3 style="color: var(--light);max-width: 100%;text-align: left;font-size: 24px;">
                                             About</h3>
                                         <ul>
-                                            <li style="text-align: left;"><a href="/about-us.html">Company</a></li>
-                                            <li style="text-align: left;"><a href="/about-us.html">Team</a></li>
-                                            <li style="text-align: left;"><a href="/about-us.html">Legacy</a></li>
+                                            <li style="text-align: left;"><a href="{{ url_for('about')}}">Company</a></li>
+                                            <li style="text-align: left;"><a href="{{ url_for('about')}}">Team</a></li>
+                                            <li style="text-align: left;"><a href="{{ url_for('about')}}">Legacy</a></li>
                                         </ul>
                                     </div><!-- End: About -->
                                     <div class="col" style="background: #2c3032;"></div><!-- Start: Social Icons -->

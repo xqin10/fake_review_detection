@@ -60,14 +60,15 @@ We help our customers detect which is the deceptive reviews and notify them as s
         </div>
     </nav>
 
-    {% if ret_code == 1 %}
-    <h1 style="margin-left: 10%;">{{ msg }}</h1>
-    {% else %}
     <section class="clean-block clean-services dark">
         <div class="container">
             <div class="block-heading"></div>
         </div><!-- Start: Highlight Clean -->
 
+        {% if ret_code == 1 %}
+            </br>
+            <h1 style="margin-left: 10%;">{{ msg }}</h1>
+        {% else %}
         <section class="highlight-clean">
             <div class="container">
                 <!-- Start: Intro -->
@@ -120,8 +121,9 @@ We help our customers detect which is the deceptive reviews and notify them as s
                 </tbody>
             </table>
         </section><!-- End: Highlight Clean -->
+        {% endif %}
     </section><!-- Start: Footer Dark -->
-    {% endif %}
+    
     <footer class="page-footer dark" style="width: 100%;">
         <div class="container" style="width: 100%;">
             <div class="row" style="width: 100%;">
