@@ -4,64 +4,137 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Smartacus</title>
-    <link rel="shortcut icon" type="image/jpg" href="../static/img/S.png"/>
-    <meta name="description" content="Popular travel website trip advisor was flooded with millions of spam hotel reviews in 2019, travellers were misled by these spam reviews and ended up choosing accommodations that did not meet their expectations. It is particularly hard for humans to distinguish spam review from genuine reviews. 
+    <title>Home - Smartacus</title>
+    <meta name="description"
+        content="Popular travel website trip advisor was flooded with millions of spam hotel reviews in 2019, travellers were misled by these spam reviews and ended up choosing accommodations that did not meet their expectations. It is particularly hard for humans to distinguish spam review from genuine reviews. 
 
 We help our customers detect which is the deceptive reviews and notify them as soon as they open the webpage. The review contents will be sent back to our server side and have a judgement immediately.">
-    <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css?h=93b9126d9897228aed9a2962d27e678d">
+    <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css?h=bd1e31922ddba710f575551d3c65515d">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i">
-    <link rel="stylesheet" href="../static/fonts/font-awesome.min.css?h=5ef01a1d3ea555acf3dc221bf2ad88a9">
-    <link rel="stylesheet" href="../static/fonts/simple-line-icons.min.css?h=5ef01a1d3ea555acf3dc221bf2ad88a9">
+    <link rel="stylesheet" href="../static/fonts/font-awesome.min.css?h=2cbf12caab31562d03bae9544edcad5f">
+    <link rel="stylesheet" href="../static/fonts/simple-line-icons.min.css?h=2cbf12caab31562d03bae9544edcad5f">
     <link rel="stylesheet" href="../static/css/Footer-Clean.css?h=80440af34c3a73cbe2f06ff4585d315b">
     <link rel="stylesheet" href="../static/css/Highlight-Clean.css?h=22f5c37d9256feae966552e68b9ff2f3">
     <link rel="stylesheet" href="../static/css/Highlight-Phone.css?h=34cb454057667119be71974590677f5d">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.css">
     <link rel="stylesheet" href="../static/css/smoothproducts.css?h=38a515b6b30123300b3619cce6411cec">
     <link rel="stylesheet" href="../static/css/Team-Clean.css?h=96674734e5c3c822192833a73a70ff3f">
     <link rel="stylesheet" href="../static/css/Team-Grid.css?h=037c10c4e83bd71c345e85c360a593fe">
+    <link rel="stylesheet" href="../static/css/untitled.css?h=f2e0b8d12ec856e7237c0a7c9fe690d3">
+    <script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script>
 </head>
 
 <body style="background: #eeeeee;">
-    <nav class="navbar navbar-light navbar-expand-lg fixed-top bg-white clean-navbar" style="background: rgb(55,166,246);filter: saturate(90%);max-width: 100%;">
-        <div class="container"><a href="{{ url_for('home') }}"><img class="img-fluid" src="../static/img/Project%20Smartacus.png?h=138cc65f325fb87e72c3153d47e203ba" width="220" height="90"/></a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse" id="navcol-1">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item"><a class="nav-link active" href="{{ url_for('home') }}">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('features') }}">Features</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('about') }}">About Us</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('howtouse') }}">How to Use</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('contact') }}">Contact Us</a></li>
+    <nav class="navbar navbar-light navbar-expand-lg fixed-top bg-white clean-navbar"
+        style="background: rgb(55,166,246);filter: saturate(90%);max-width: 100%;padding-right: 10%;padding-left: 10%;">
+        <div class="container-fluid">
+            <form id="header_search_box" action="{{ url_for('results')}}" method="POST">
+                <div class="d-inline-block" style="width: 600px;">
+                    <a href="{{ url_for('home') }}">
+                        <img class="img-fluid"
+                            src="../static/img/Project%20Smartacus.png?h=138cc65f325fb87e72c3153d47e203ba" width="220"
+                            height="90" />
+                    </a>
+                    <input type="text" placeholder="https://www." name="urlinput">
+                    <a class="btn btn-outline-light btn-sm d-inline-block" role="button"
+                        onclick="document:header_search_box.submit()"
+                        style="/*font-weight: bold;*/background: rgb(234,155,105);margin-top: 0%;padding-top: 6px;padding-bottom: 4px;"
+                        target="_top">
+                        Analyze
+                    </a>
+                </div><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span
+                        class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            </form>
+            <div class="collapse navbar-collapse" id="navcol-1" style="max-width: 45%;width: 593px;">
+                <ul class="navbar-nav ml-auto" style="width: 1000px;max-width: 100%;font-size: 16px;">
+                    <li class="nav-item" style="width: 150px;"><a
+                            class="nav-link d-xl-flex justify-content-xl-center active" href="{{ url_for('home') }}"
+                            style="width: 150px;font-size: 16px;">Home</a></li>
+                    <li class="nav-item" style="width: 150px;font-size: 16px;"><a
+                            class="nav-link d-xl-flex justify-content-xl-center" href="{{ url_for('howtouse') }}"
+                            style="width: 150px;font-size: 16px;">How IT WORKS</a></li>
+                    <li class="nav-item" style="width: 150px;"><a class="nav-link d-xl-flex justify-content-xl-center"
+                            href="{{ url_for('features') }}" style="width: 150px;font-size: 16px;">Features</a></li>
+                    <li class="nav-item" style="width: 150px;"><a class="nav-link d-xl-flex justify-content-xl-center"
+                            href="{{ url_for('about') }}" style="width: 150px;font-size: 16px;">About Us</a></li>
+                    <li class="nav-item" style="width: 150px;"><a
+                            class="nav-link text-center d-xl-flex justify-content-xl-center"
+                            href="{{ url_for('contact') }}"
+                            style="width: 150px;font-size: 16px;text-align: center;">Contact Us</a></li>
                 </ul>
             </div>
         </div>
     </nav>
     <main class="page landing-page" style="margin-bottom: 5%;">
-        <section class="clean-block clean-hero" style="color: rgba(36,37,37,0.88);font-weight: normal;background: url(&quot;/static/img/pexels-quark-studio-3201921.jpg?h=0101dda14b1207525ea260179f1cea12&quot;) center / cover, radial-gradient(black 53%, white);">
-            <div class="text">
-                <p style="width: 100%;font-size: 150%;font-weight: bold;">Identify fake reviews from the hotels, restaurants, cafes and bars.&nbsp;<strong>Save yourself from a horrible experience.</strong></p>
-                <form action="{{ url_for('predict')}}" method="POST">
-                <p style="text-align: center;max-width: 100%;width: 100%;font-size: 150%;font-weight: bold;"></p><textarea name="message" class="flex-grow-1 flex-shrink-1 flex-fill justify-content-center align-items-center align-content-center align-self-center flex-wrap" style="width: 100%;margin-left: 0%;margin-right: 0;margin-bottom: 5%;" placeholder="Paste a review here." rows="5"></textarea>
-                    <button type="submit" class="btn btn-primary btn-block btn-large">Check Review</button>
-                    <br>        </br></br>
-
-                {% if word_count < 200 %}
-                <h4 style="color:rgb(255, 0, 0);"><strong>The minimum of word is 200, please input more! </strong></h4>
-                {% if prediction == 0 %}
-                <h4 style="color:rgb(255, 0, 0);"><strong>This is a Fake Review! </strong></h4>
-                {% elif prediction == 1 %}
-                <h4 style="color:rgb(1, 250, 134)"><strong>Don't worry, it's not a Fake Review </strong></h4>
-                {% endif %}
-                <!-- This should be improved that if there's 0 reviews should not be visible -->
-                </form> </div>
-        </section>
-        <section>
-            <div class="container" style="text-align: center;margin-top: 5%;">
-                <h1 style="font-size: 200%;margin-bottom: 5%;font-weight: bold;">Online reviews may be fake, but their effects are real.</h1>
+        <section class="d-xl-flex justify-content-xl-center clean-block clean-hero"
+            style="color: rgba(36,37,37,0.88);font-weight: normal;background: url(&quot;../static/img/pexels-quark-studio-3201921.jpg?h=0101dda14b1207525ea260179f1cea12&quot;) center / cover, radial-gradient(black 53%, white);padding-top: 5%;height: 1098px;">
+            <div class="text" style="max-width: 100%;padding-top: 5%;">
+                <p
+                    style="width: 85%;font-size: 48px;font-weight: bold;max-width: 80%;text-align: center;margin-left: 10%;margin-right: 10%;">
+                    Identify fake reviews from the hotels, restaurants, cafes and bars.&nbsp;<strong>Save yourself from
+                        a horrible experience.</strong></p>
+                <p style="text-align: center;max-width: 100%;width: 100%;font-size: 150%;font-weight: bold;"></p>
+                <form id="landing_search_box" action="{{ url_for('results')}}" method="POST">
+                    <textarea
+                        class="flex-grow-1 flex-shrink-1 flex-fill justify-content-center align-items-center align-content-center align-self-center flex-wrap"
+                        style="width: 100%;margin-left: 20%;margin-right: 20%;margin-bottom: 2%;max-width: 60%;"
+                        rows="2" name="urlinput" placeholder="Paste URL here: https://www."></textarea><a
+                        class="btn btn-outline-light btn-lg" role="button"
+                        onclick="document:landing_search_box.submit()"
+                        style="font-weight: bold;background: rgb(234,155,105);" target="_top">Analyze Reviews</a>
+                    <div data-aos="fade"><i class="fa fa-arrow-circle-down pulse animated infinite"
+                            style="font-size: 48px;padding-top: 10%;"></i></div>
+                </form>
             </div>
-            <div class="container" style="text-align: center;margin-top: 5%;">
-                <h4 style="width: 100%;">Total <span style="font-size: larger; font-weight: bolder">{{ total_reviews_count }}</span> reviews have been submitted, with <span style="font-size: larger; font-weight: bolder">{{ perc_true_review }}%</span> of them were REAL.</h4>
+        </section>
+        <section class="justify-content-xl-center">
+            <div class="container"
+                style="text-align: center;margin-top: 1%;width: 100%;max-width: 100%;background: #ffffff;margin-bottom: 5%;padding-bottom: 5%;">
+                <h1 style="font-size: 200%;margin-bottom: 2%;font-weight: bold;margin-top: 0%;padding-top: 2%;">... or
+                    simply paste a review below, to know more.</h1>
+                <div class="text">
+                    <!-- <p style="width: 100%;font-size: 150%;font-weight: bold;">Identify fake reviews from the hotels, restaurants, cafes and bars.&nbsp;<strong>Save yourself from a horrible experience.</strong></p> -->
+                    <form id="review_analysis" action="{{ url_for('predict')}}" method="POST">
+                        <p style="text-align: center;max-width: 100%;width: 100%;font-size: 150%;font-weight: bold;">
+                        </p>
+                        <textarea name="message"
+                            class="flex-grow-1 flex-shrink-1 flex-fill justify-content-center align-items-center align-content-center align-self-center flex-wrap"
+                            style="width: 100%;margin-left: 0%;margin-right: 0%;margin-bottom: 2%;max-width: 60%;"
+                            placeholder="Paste a review here." rows="5"></textarea>
+                        <br> </br>
+                        <a class="btn btn-outline-light btn-lg" role="button"
+                            onclick="document:review_analysis.submit()"
+                            style="font-weight: bold;background: rgb(234,155,105);" target="_top">Check Review</a>
+                        <br> </br></br>
 
+                        {% if word_count is not none and word_count < 20 and word_count> 0 %}
+                            <h4 style="color:rgb(255, 0, 0);"><strong>The minimum of words is 20, please paste a review correctly!
+                                </strong></h4>
+                        {% elif language is not none and language != 'en' %}
+                            <h4 style="color:rgb(255, 0, 0);"><strong>Sorry, we currently support English as our primary language. </strong>
+                            </h4>
+                        {% else %}
+                            {% if prediction == 0 %}
+                            <h4 style="color:rgb(255, 0, 0);"><strong>This is a Fake Review! </strong></h4>
+                            {% elif prediction == 1 %}
+                            <h4 style="color:rgb(1, 250, 134)"><strong>Don't worry, it's not a Fake Review </strong>
+                            </h4>
+                            {% endif %}
+                        {% endif %}
+                            <!-- This should be improved that if there's 0 reviews should not be visible -->
+                    </form>
+                </div>
+            </div>
+            <div class="container"
+                style="text-align: center;margin-top: 0%;background: #ffffff;width: 100%;max-width: 90%;height: 100%;">
+                <h1 style="font-size: 200%;margin-bottom: 5%;font-weight: bold;padding-top: 2%;">Online reviews may be
+                    fake, but their effects are real.</h1>
+                <h1 style="font-size: 200%;margin-bottom: 5%;font-weight: bold;">Total &nbsp;<span
+                        style="font-size: 150%;">{{total_reviews_count}}</span>&nbsp; reviews have been submitted and verified,
+                    &nbsp;Overall, <span style="font-size: 150%;">{{perc_fake_review}}%</span>&nbsp; of them were fake.</h1>
+                <div id="chart" style="width: 400px; height:400px; margin: 0 auto;"></div>
             </div>
         </section>
     </main><!-- Start: Footer Dark -->
@@ -70,12 +143,13 @@ We help our customers detect which is the deceptive reviews and notify them as s
             <div class="row">
                 <div class="col">
                     <!-- Start: Footer Clean -->
-                    <footer class="footer-clean" style="background: #2d2f32;">
+                    <footer class="footer-clean" style="background: #2d2f32;font-size: 16px;">
                         <div class="container">
                             <div class="row text-left" style="margin-right: 0;margin-left: 0;width: 100%;">
                                 <!-- Start: About -->
-                                <div class="col-sm-4 col-md-3 item" style="text-align: left;">
-                                    <h3 style="color: var(--light);max-width: 100%;text-align: left;">Product</h3>
+                                <div class="col-sm-4 col-md-3 item" style="text-align: left;font-size: 16px;">
+                                    <h3 style="color: var(--light);max-width: 100%;text-align: left;font-size: 24px;">
+                                        Product</h3>
                                     <ul>
                                         <li><a href="{{ url_for('home') }}">Smartacus</a></li>
                                         <li><a href="{{ url_for('howtouse') }}">How to Use</a></li>
@@ -84,7 +158,8 @@ We help our customers detect which is the deceptive reviews and notify them as s
                                 </div><!-- End: About -->
                                 <!-- Start: About -->
                                 <div class="col-sm-4 col-md-3 item">
-                                    <h3 style="color: var(--light);max-width: 100%;text-align: left;">About</h3>
+                                    <h3 style="color: var(--light);max-width: 100%;text-align: left;font-size: 24px;">
+                                        About</h3>
                                     <ul>
                                         <li style="text-align: left;"><a href="{{ url_for('about') }}">Company</a></li>
                                         <li style="text-align: left;"><a href="{{ url_for('about') }}">Team</a></li>
@@ -93,7 +168,8 @@ We help our customers detect which is the deceptive reviews and notify them as s
                                 </div><!-- End: About -->
                                 <div class="col" style="background: #2c3032;"></div><!-- Start: Social Icons -->
                                 <div class="col-lg-3 item social" style="color: var(--light);">
-                                    <p class="copyright" style="width: 250.5px;">All Rights Reserved | TECH-REX © 2021</p>
+                                    <p class="copyright" style="width: 450px;font-size: 20px;">All Rights Reserved |
+                                        TECH-REX © 2021</p>
                                 </div><!-- End: Social Icons -->
                             </div>
                         </div>
@@ -105,8 +181,50 @@ We help our customers detect which is the deceptive reviews and notify them as s
             <p style="width: 100%;">© 2021 | TECH-REX</p>
         </div>
     </footer><!-- End: Footer Dark -->
+    <script type="text/javascript">
+        var myChart = echarts.init(document.getElementById('chart'));
+
+        option = {
+            tooltip: {
+                trigger: 'item'
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'right',
+            },
+            series: [
+                {
+                    name: 'reviews',
+                    type: 'pie',
+                    radius: ['40%', '70%'],
+                    label: {
+                        show: false,
+                        position: 'center'
+                    },
+                    emphasis: {
+                        label: {
+                            show: true,
+                            fontSize: '14',
+                            // fontWeight: ''
+                        }
+                    },
+                    labelLine: {
+                        show: false
+                    },
+                    data: [
+                        { value: '{{fake_reviews_count}}', name: 'Fake Reviews' },
+                        { value: '{{true_reviews_count}}', name: 'Real Reviews' }
+                    ]
+                }
+            ]
+        };
+        // Display
+        myChart.setOption(option);
+    </script>
     <script src="../static/js/jquery.min.js?h=89312d34339dcd686309fe284b3f226f"></script>
     <script src="../static/bootstrap/js/bootstrap.min.js?h=ba42258394f86cd7822f0e850e2d60b1"></script>
+    <script src="../static/js/bs-init.js?h=36ffa0191e9d112d6a97bac11fc65d8e"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
     <script src="../static/js/smoothproducts.min.js?h=975b2635c9a06eae9f47d6cae8158a12"></script>
     <script src="../static/js/theme.js?h=417b03f5f0a4f9f27f8c248f532eb5af"></script>
