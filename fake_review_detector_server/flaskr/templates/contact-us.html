@@ -23,6 +23,10 @@ We help our customers detect which is the deceptive reviews and notify them as s
     <link rel="stylesheet" href="../static/css/Team-Clean.css?h=96674734e5c3c822192833a73a70ff3f">
     <link rel="stylesheet" href="../static/css/Team-Grid.css?h=037c10c4e83bd71c345e85c360a593fe">
     <link rel="stylesheet" href="../static/css/untitled.css?h=f2e0b8d12ec856e7237c0a7c9fe690d3">
+    <script src="../static/js/jquery.min.js?h=89312d34339dcd686309fe284b3f226f"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/bootstrap-validator/0.5.3/js/bootstrapValidator.min.js"></script>
+    <link href="https://cdn.bootcdn.net/ajax/libs/bootstrap-validator/0.5.3/css/bootstrapValidator.min.css"
+        rel="stylesheet">
 </head>
 
 <body>
@@ -30,15 +34,22 @@ We help our customers detect which is the deceptive reviews and notify them as s
         style="background: rgb(55,166,246);filter: saturate(90%);max-width: 100%;padding-right: 10%;padding-left: 10%;">
         <div class="container-fluid">
             <form id="header_search_box" action="{{ url_for('results')}}" method="POST">
-                <div class="d-inline-block" style="width: 600px;"><a href="{{ url_for('home')}}"><img class="img-fluid"
+                <div class="d-inline-block" style="width: 600px;">
+                    <a href="{{ url_for('home')}}">
+                        <img class="img-fluid"
                             src="../static/img/Project%20Smartacus.png?h=138cc65f325fb87e72c3153d47e203ba" width="220"
-                            height="90" /></a><input type="text" placeholder="https://www." name="urlinput"><a
-                        class="btn btn-outline-light btn-sm d-inline-block" role="button"
-                        onclick="document:header_search_box.submit()"
-                        style="/*font-weight: bold;*/background: rgb(234,155,105);margin-top: 0%;padding-top: 6px;padding-bottom: 4px;"
-                        target="_top">Analyze</a></div><button data-toggle="collapse" class="navbar-toggler"
-                    data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span
-                        class="navbar-toggler-icon"></span></button>
+                            height="90" />
+                    </a>
+                    <div class="form-group form-inline">
+                        <input type="text" placeholder="https://www." name="urlinput" class="form-control">
+                        <button class="btn btn-outline-light btn-sm d-inline-block form-control" role="button"
+                            type="submit"
+                            style="/*font-weight: bold;*/background: rgb(234,155,105);margin-top: 0%;padding-top: 6px;padding-bottom: 4px;"
+                            target="_top">Analyze</button>
+                    </div>
+                </div>
+                <button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span
+                        class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
             </form>
             <div class="collapse navbar-collapse" id="navcol-1" style="max-width: 45%;width: 593px;">
                 <ul class="navbar-nav ml-auto" style="width: 1000px;max-width: 100%;font-size: 16px;">
@@ -122,7 +133,32 @@ We help our customers detect which is the deceptive reviews and notify them as s
             </div>
         </footer><!-- End: Footer Dark -->
     </main>
-    <script src="../static/js/jquery.min.js?h=89312d34339dcd686309fe284b3f226f"></script>
+    <script>
+        $(function () {
+            $('#header_search_box').bootstrapValidator({
+                message: 'This value is not valid',
+                feedbackIcons: {
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+                fields: {
+                    urlinput: {
+                        message: '',
+                        validators: {
+                            notEmpty: {
+                                message: 'Please enter an URL.'
+                            },
+                            regexp: {
+                                regexp: /www.tripadvisor.com.*\/(Hotel_Review-|Restaurant_Review-)/g,
+                                message: 'Please Enter a solid URL for Tripadvisor Hotel or Restaurant Channel.'
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
     <script src="../static/bootstrap/js/bootstrap.min.js?h=ba42258394f86cd7822f0e850e2d60b1"></script>
     <script src="../static/js/bs-init.js?h=36ffa0191e9d112d6a97bac11fc65d8e"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
