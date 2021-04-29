@@ -23,7 +23,11 @@ We help our customers detect which is the deceptive reviews and notify them as s
     <link rel="stylesheet" href="../static/css/Team-Clean.css?h=96674734e5c3c822192833a73a70ff3f">
     <link rel="stylesheet" href="../static/css/Team-Grid.css?h=037c10c4e83bd71c345e85c360a593fe">
     <link rel="stylesheet" href="../static/css/untitled.css?h=f2e0b8d12ec856e7237c0a7c9fe690d3">
+    <script src="../static/js/jquery.min.js?h=89312d34339dcd686309fe284b3f226f"></script>
     <script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/bootstrap-validator/0.5.3/js/bootstrapValidator.min.js"></script>
+    <link href="https://cdn.bootcdn.net/ajax/libs/bootstrap-validator/0.5.3/css/bootstrapValidator.min.css"
+        rel="stylesheet">
 </head>
 
 <body style="background: #eeeeee;">
@@ -37,13 +41,13 @@ We help our customers detect which is the deceptive reviews and notify them as s
                             src="../static/img/Project%20Smartacus.png?h=138cc65f325fb87e72c3153d47e203ba" width="220"
                             height="90" />
                     </a>
-                    <input type="text" placeholder="https://www." name="urlinput">
-                    <a class="btn btn-outline-light btn-sm d-inline-block" role="button"
-                        onclick="document:header_search_box.submit()"
-                        style="/*font-weight: bold;*/background: rgb(234,155,105);margin-top: 0%;padding-top: 6px;padding-bottom: 4px;"
-                        target="_top">
-                        Analyze
-                    </a>
+                    <div class="form-group form-inline">
+                        <input type="text" placeholder="https://www." name="urlinput" class="form-control">
+                        <button class="btn btn-outline-light btn-sm form-control" role="button"
+                            type="submit"
+                            style="/*font-weight: bold;*/background: rgb(234,155,105);margin-top: 0%;padding-top: 6px;padding-bottom: 4px;"
+                            target="_top">Analyze</button>
+                    </div>
                 </div><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span
                         class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
             </form>
@@ -77,15 +81,19 @@ We help our customers detect which is the deceptive reviews and notify them as s
                         a horrible experience.</strong></p>
                 <p style="text-align: center;max-width: 100%;width: 100%;font-size: 150%;font-weight: bold;"></p>
                 <form id="landing_search_box" action="{{ url_for('results')}}" method="POST">
-                    <textarea
-                        class="flex-grow-1 flex-shrink-1 flex-fill justify-content-center align-items-center align-content-center align-self-center flex-wrap"
-                        style="width: 100%;margin-left: 20%;margin-right: 20%;margin-bottom: 2%;max-width: 60%;"
-                        rows="2" name="urlinput" placeholder="Paste URL here: https://www."></textarea><a
-                        class="btn btn-outline-light btn-lg" role="button"
-                        onclick="document:landing_search_box.submit()"
-                        style="font-weight: bold;background: rgb(234,155,105);" target="_top">Analyze Reviews</a>
+                    <div class="form-group">
+                        <textarea
+                            class="flex-grow-1 flex-shrink-1 flex-fill justify-content-center align-items-center align-content-center align-self-center flex-wrap form-control"
+                            style="width: 100%;margin-left: 20%;margin-right: 20%;margin-bottom: 2%;max-width: 60%;"
+                            rows="2" name="urlinput" placeholder="Paste URL here: https://www."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-outline-light btn-sm form-control" role="button"
+                            style="font-weight: bold;background: rgb(234,155,105); width: max-content;" target="_top">Analyze
+                            Reviews</button>
+                    </div>
                     <div data-aos="fade"><i class="fa fa-arrow-circle-down pulse animated infinite"
-                            style="font-size: 48px;padding-top: 10%;"></i></div>
+                        style="font-size: 48px;padding-top: 10%;"></i></div>
                 </form>
             </div>
         </section>
@@ -110,19 +118,21 @@ We help our customers detect which is the deceptive reviews and notify them as s
                         <br> </br></br>
 
                         {% if word_count is not none and word_count < 20 and word_count> 0 %}
-                            <h4 style="color:rgb(255, 0, 0);"><strong>The minimum of words is 20, please paste a review correctly!
+                            <h4 style="color:rgb(255, 0, 0);"><strong>The minimum of words is 20, please paste a review
+                                    correctly!
                                 </strong></h4>
-                        {% elif language is not none and language != 'en' %}
-                            <h4 style="color:rgb(255, 0, 0);"><strong>Sorry, we currently support English as our primary language. </strong>
+                            {% elif language is not none and language != 'en' %}
+                            <h4 style="color:rgb(255, 0, 0);"><strong>Sorry, we currently support English as our primary
+                                    language. </strong>
                             </h4>
-                        {% else %}
+                            {% else %}
                             {% if prediction == 0 %}
                             <h4 style="color:rgb(255, 0, 0);"><strong>This is a Fake Review! </strong></h4>
                             {% elif prediction == 1 %}
                             <h4 style="color:rgb(1, 250, 134)"><strong>Don't worry, it's not a Fake Review </strong>
                             </h4>
                             {% endif %}
-                        {% endif %}
+                            {% endif %}
                             <!-- This should be improved that if there's 0 reviews should not be visible -->
                     </form>
                 </div>
@@ -132,8 +142,10 @@ We help our customers detect which is the deceptive reviews and notify them as s
                 <h1 style="font-size: 200%;margin-bottom: 5%;font-weight: bold;padding-top: 2%;">Online reviews may be
                     fake, but their effects are real.</h1>
                 <h1 style="font-size: 200%;margin-bottom: 5%;font-weight: bold;">Total &nbsp;<span
-                        style="font-size: 150%;">{{total_reviews_count}}</span>&nbsp; reviews have been submitted and verified,
-                    &nbsp;Overall, <span style="font-size: 150%;">{{perc_fake_review}}%</span>&nbsp; of them were fake.</h1>
+                        style="font-size: 150%;">{{total_reviews_count}}</span>&nbsp; reviews have been submitted and
+                    verified,
+                    &nbsp;Overall, <span style="font-size: 150%;">{{perc_fake_review}}%</span>&nbsp; of them were fake.
+                </h1>
                 <div id="chart" style="width: 400px; height:400px; margin: 0 auto;"></div>
             </div>
         </section>
@@ -221,7 +233,32 @@ We help our customers detect which is the deceptive reviews and notify them as s
         // Display
         myChart.setOption(option);
     </script>
-    <script src="../static/js/jquery.min.js?h=89312d34339dcd686309fe284b3f226f"></script>
+    <script>
+        $(function () {
+            $('form').bootstrapValidator({
+                message: 'This value is not valid',
+                feedbackIcons: {
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+                fields: {
+                    urlinput: {
+                        message: '',
+                        validators: {
+                            notEmpty: {
+                                message: 'Please enter an URL.'
+                            },
+                            regexp: {
+                                regexp: /www.tripadvisor.com.*\/(Hotel_Review-|Restaurant_Review-)/g,
+                                message: 'Please Enter a solid URL for Tripadvisor Hotel or Restaurant Channel.'
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
     <script src="../static/bootstrap/js/bootstrap.min.js?h=ba42258394f86cd7822f0e850e2d60b1"></script>
     <script src="../static/js/bs-init.js?h=36ffa0191e9d112d6a97bac11fc65d8e"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
