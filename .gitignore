@@ -22,3 +22,8 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+fake_review_detector_server/.DS_Store
+fake_review_detector_server/.vscode/
+fake_review_detector_server/flaskr/static/.DS_Store
+fake_review_detector_server/flaskr/__pycache__
