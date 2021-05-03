@@ -1,6 +1,6 @@
 # Smartacus V1
 
-http://smartacus.tech/
+http://smartacus.ml/
 
 ## Detect fake reviews of restaurants, cafes and bars
 
