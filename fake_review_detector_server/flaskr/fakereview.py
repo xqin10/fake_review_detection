@@ -286,13 +286,15 @@ if __name__ == '__main__':
     print("Loading in {} environment ....".format(env))
 
     # Read resources
-    filename = 'resources/CatBoostClassifier.pkl'
-    # filename = 'resources/lightBGM.pkl'
-    clf = pickle.load(open(filename,'rb'))
+    #filename = 'resources/CatBoostClassifier.pkl'
+    #filename = 'resources/lightGBM.pkl'
+    #clf = pickle.load(open(filename,'rb'))
+    clf = bz2.BZ2File(open('resources/LGBM.pkl.pbz2', 'rb'))
+    clf = cPickle.load(clf)
 
-    # cv = bz2.BZ2File(open('resources/cvtransform.pkl.pbz2', 'rb'))
-    # cv = cPickle.load(cv)
-    cv = pickle.load(open('resources/transform.pkl', 'rb'))
+    cv = bz2.BZ2File(open('resources/cvtransform.pkl.pbz2', 'rb'))
+    cv = cPickle.load(cv)
+    #cv = pickle.load(open('resources/transform.pkl', 'rb'))
 
     # Read config.init
     config = configparser.ConfigParser()
