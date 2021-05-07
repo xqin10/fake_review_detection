@@ -196,7 +196,7 @@ def extract_one_pagination(node):
   else:
       p['status'] = None
   if 'href' in node.attrs:
-      p['url'] = node['href']
+      p['url'] = 'https://www.tripadvisor.com.au' + node['href']
   else:
       p['url'] = '#'
   print(p)
@@ -281,7 +281,8 @@ def scrape(start_url):
     biz_type = "Biz"
     platform_type = "Yelp"
     if "?start=" not in start_url:
-        for page in range(0, 5):
+        # Only access the first page.
+        for page in range(0, 1):
             url = start_url + '?start={}'.format(10*page)
             print(url)
             urls.append(url)
@@ -322,7 +323,7 @@ def results():
       paginations = [{'name': 'Previous', 'status': 'disable', 'url': None}, {'name': 'Next', 'status': None, 'url': 'https://www.tripadvisor.com/Restaurant_Review-g255100-d728473-Reviews-or10-Sud_Food_and_Wine-Melbourne_Victoria.html'}, {'name': '1', 'status': None, 'url': 'https://www.tripadvisor.com/Restaurant_Review-g255100-d728473-Reviews-Sud_Food_and_Wine-Melbourne_Victoria.html'}, {'name': '2', 'status': None, 'url': 'https://www.tripadvisor.com/Restaurant_Review-g255100-d728473-Reviews-or10-Sud_Food_and_Wine-Melbourne_Victoria.html'}, {'name': '3', 'status': None, 'url': '/Restaurant_Review-g255100-d728473-Reviews-or20-Sud_Food_and_Wine-Melbourne_Victoria.html'}, {'name': '4', 'status': None, 'url': '/Restaurant_Review-g255100-d728473-Reviews-or30-Sud_Food_and_Wine-Melbourne_Victoria.html'}, {'name': '5', 'status': None, 'url': '/Restaurant_Review-g255100-d728473-Reviews-or40-Sud_Food_and_Wine-Melbourne_Victoria.html'}, {'name': '6', 'status': None, 'url': '/Restaurant_Review-g255100-d728473-Reviews-or50-Sud_Food_and_Wine-Melbourne_Victoria.html'}, {'name': '…', 'status': None, 'url': None}, {'name': '21', 'status': None, 'url': '/Restaurant_Review-g255100-d728473-Reviews-or200-Sud_Food_and_Wine-Melbourne_Victoria.html'}]
 
       url = request.form['urlinput']
-      # print("The requested url: " + url)
+      print("The requested url: " + url)
       # data = []
       # try:
       #   biz_type, platform_type, scrape_data, paginations = scrape(url)

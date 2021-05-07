@@ -23,7 +23,7 @@ We help our customers detect which is the deceptive reviews and notify them as s
     <link rel="stylesheet" href="../static//css/Team-Clean.css?h=96674734e5c3c822192833a73a70ff3f">
     <link rel="stylesheet" href="../static//css/Team-Grid.css?h=037c10c4e83bd71c345e85c360a593fe">
     <link rel="stylesheet" href="../static//css/untitled.css?h=f2e0b8d12ec856e7237c0a7c9fe690d3">
-    <script src="../static/js/echarts.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/4.3.0/echarts.min.js"></script>
     <script src="../static/js/jquery.min.js?h=89312d34339dcd686309fe284b3f226f"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/bootstrap-validator/0.5.3/js/bootstrapValidator.min.js"></script>
     <link href="https://cdn.bootcdn.net/ajax/libs/bootstrap-validator/0.5.3/css/bootstrapValidator.min.css"
@@ -116,31 +116,27 @@ We help our customers detect which is the deceptive reviews and notify them as s
                 </tbody>
             </table>
             {% if paginations is not none %}
-                <!-- <form action="http://smartacus.ml/results" method="POST" target="_blank" id="myform"> -->
-                    <!-- <input type="hidden" name="urlinput" id="url" /> -->
-                    <!-- <button class="btn-outline-light btn-sm" role="button" type="submit"
+            <!-- <form action="http://smartacus.ml/results" method="POST" target="_blank" id="myform"> -->
+            <!-- <input type="hidden" name="urlinput" id="url" /> -->
+            <!-- <button class="btn-outline-light btn-sm" role="button" type="submit"
                     style="/*font-weight: bold;*/background: rgb(234,155,105);margin-top: 0%;padding-top: 6px;padding-bottom: 4px; margin-bottom: 4%;"
                     target="_top" value="Analyze" id="submit">Analyze Page</button> -->
-                <!-- </form> -->
-                <form action="http://smartacus.ml/results" method="POST" id="myform">
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-center">
-                        {% for p in paginations %}
-                            {% if p.status is not none %}
-                                <li class="page-item disabled"><a class="page-link" aria-disabled="true">{{p.name}}</a></li>
-                            {% else %}
-                                <input type="hidden" name="urlinput" value="{{p.url}}"></inpute>
-                                <li class="page-item"><a class="page-link" type="submit" target="_top">{{p.name}}</a></li>
-                            {% endif %}
-                        {% endfor %}
-                        <!-- <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">Next</a></li> -->
-                    </ul>
-                </nav>
-                </form>
+            <!-- </form> -->
+            <!-- <form action="{{ url_for('results')}}" method="POST" id="myform" name="urlinput">
+                <input id="urlinput" type="hidden"></inpute> -->
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    {% for p in paginations %}
+                    {% if p.status is not none %}
+                    <li class="page-item disabled"><a class="page-link" aria-disabled="true">{{p.name}}</a></li>
+                    {% else %}
+                    <li class="page-item"><input type="hidden" value="{{p.url}}"></inpute><a class="page-link"
+                            type="submit" target="_top">{{p.name}}</a></li>
+                    {% endif %}
+                    {% endfor %}
+                </ul>
+            </nav>
+            <!-- </form> -->
             {% endif %}
         </section><!-- End: Highlight Clean -->
         {% endif %}
@@ -150,14 +146,18 @@ We help our customers detect which is the deceptive reviews and notify them as s
     <script type="text/javascript">
         $("a.page-link").click(function () {
             console.log("clicking.....")
+            // $("#urlinput").attr("value",)
             // $("url").setAttribute("value", "https://www.tripadvisor.com/" + str($(this).attr("href")))
-            $("url").val($(this).attr("href"))
-            $("#myform").submit()
+            // $("input[name='urlinput']").val($(this).siblings("input").attr("value"))
+            // $("input[name='urlinput']").value("ssssss")
+            // $("#header_search_box").submit()
+            $.ajax({
+            });
         });
         $("li.page-item").click(function () {
             console.log("clicking.....")
-            $("url").val($(this).attr("href"))
-            $("#myform").submit()
+            $("input[name='urlinput']").val($(this).children("input").attr("value"))
+            $("#header_search_box").submit()
         });
     </script>
     <script type="text/javascript">
