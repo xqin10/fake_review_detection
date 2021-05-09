@@ -100,6 +100,10 @@ def about():
 def howtouse():
     return render_template("how-to-use.html")
 
+@app.route("/howitworks")
+def howitworks():
+    return render_template("How-It-Works.html")
+
 @app.route("/contact")
 def contact():
     return render_template("contact-us.html")
