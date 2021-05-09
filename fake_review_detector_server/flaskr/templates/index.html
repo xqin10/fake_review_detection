@@ -44,11 +44,14 @@
   <meta property="og:url" content="index.html">
 </head>
 
-<body data-home-page="https://website372945.nicepage.io/Home.html?version=1bccf1e1-64af-4724-8dc0-1ce8e82957ee"
-  data-home-page-title="Home" class="u-body">
-  <header class="u-clearfix u-header u-header" id="sec-1dc5">
+<body  class="u-body"></body>
+<!-- data-home-page="https://website372945.nicepage.io/Home.html?version=1bccf1e1-64af-4724-8dc0-1ce8e82957ee"
+  data-home-page-title="Home"  -->
+ 
+  {% include 'header.html' %}
+  <!-- <header class="u-clearfix u-header u-header" id="sec-1dc5">
     <div class="u-clearfix u-sheet u-sheet-1">
-      <a href="{{ url_for('home') }}" class="u-image u-logo u-image-1" data-image-width="1500" data-image-height="1500">
+      <a href="{{ url_for('home')}}" class="u-image u-logo u-image-1" data-image-width="1500" data-image-height="1500">
         <img src="../static/img/SMARTACUS.png" class="u-logo-image u-logo-image-1" data-image-width="372.182">
       </a>
       <nav class="u-menu u-menu-dropdown u-offcanvas u-menu-1">
@@ -81,11 +84,11 @@
             </li>
             <li class="u-nav-item"><a
                 class="u-border-active-palette-1-base u-border-hover-palette-1-base u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-palette-1-base u-text-grey-90 u-text-hover-palette-2-base"
-                href="../templates/Get-Educated.html" style="padding: 10px;">Get Educated</a>
+                href="{{ url_for('geteducated') }}" style="padding: 10px;">Get Educated</a>
             </li>
             <li class="u-nav-item"><a
                 class="u-border-active-palette-1-base u-border-hover-palette-1-base u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-palette-1-base u-text-grey-90 u-text-hover-palette-2-base"
-                href="../templates/About-Us.html" style="padding: 10px;">About Us</a>
+                href="{{ url_for('about') }}" style="padding: 10px;">About Us</a>
             </li>
           </ul>
         </div>
@@ -94,16 +97,16 @@
             <div class="u-sidenav-overflow">
               <div class="u-menu-close"></div>
               <ul class="u-align-center u-nav u-popupmenu-items u-unstyled u-nav-2">
-                <li class="u-nav-item"><a class="u-button-style u-nav-link" href="{{ url_for('home') }}"
+                <li class="u-nav-item"><a class="u-button-style u-nav-link" href="{{ url_for('home')}}"
                     style="padding: 10px 20px;">Home</a>
                 </li>
-                <li class="u-nav-item"><a class="u-button-style u-nav-link" href="../templates/How-It-Works.html"
+                <li class="u-nav-item"><a class="u-button-style u-nav-link" href="{{ url_for('howitworks')}}"
                     style="padding: 10px 20px;">How It Works</a>
                 </li>
-                <li class="u-nav-item"><a class="u-button-style u-nav-link" href="../templates/Get-Educated.html"
+                <li class="u-nav-item"><a class="u-button-style u-nav-link" href="{{ url_for('geteducated')}}"
                     style="padding: 10px 20px;">Get Educated</a>
                 </li>
-                <li class="u-nav-item"><a class="u-button-style u-nav-link" href="../templates/About-Us.html"
+                <li class="u-nav-item"><a class="u-button-style u-nav-link" href="{{ url_for('about')}}"
                     style="padding: 10px 20px;">About Us</a>
                 </li>
               </ul>
@@ -137,7 +140,7 @@
      
 
     </div>
-  </header>
+  </header> -->
   <section class="u-align-left u-clearfix u-white u-section-1" id="carousel_06e3">
     <div class="u-clearfix u-sheet u-sheet-1">
       <div class="u-clearfix u-expanded-width u-layout-wrap u-layout-wrap-1">
@@ -414,9 +417,9 @@
                   users being affected by deceptive reviews every year, SMARTACUS utilizes the power of machine learning
                   and A.I to identify the spam reviews.<br>
                 </p>
-                <a href="https://nicepage.com/c/team-html-templates"
-                  class="u-border-none u-btn u-button-style u-custom-font u-font-oswald u-palette-2-base u-btn-1">How to
-                  use</a>
+                <a href="{{ url_for('howitworks')}}"
+                  class="u-border-none u-btn u-button-style u-custom-font u-font-oswald u-palette-2-base u-btn-1">How it works
+                  </a>
               </div>
             </div>
           </div>
@@ -465,7 +468,7 @@
         have designed an interactive way to make our users aware of the impacts
         of fake reviews.
       </p>
-      <a href="https://nicepage.com/c/text-website-templates"
+      <a href="{{ url_for('geteducated')}}#carousel_43fb"
         class="u-active-palette-4-light-1 u-btn u-btn-rectangle u-button-style u-custom-font u-font-oswald u-hover-palette-4-light-1 u-palette-4-base u-radius-0 u-text-active-white u-text-body-alt-color u-text-hover-white u-btn-1">TAke
         the quiz</a>
       <div class="u-shape u-shape-svg u-text-white u-shape-4">
@@ -596,7 +599,7 @@
 
 
 
-  <footer class="u-clearfix u-footer u-grey-5" id="sec-118e">
+  <!-- <footer class="u-clearfix u-footer u-grey-5" id="sec-118e">
     <div class="u-clearfix u-sheet u-sheet-1">
       <div class="u-clearfix u-expanded-width u-gutter-30 u-layout-wrap u-layout-wrap-1">
         <div class="u-gutter-0 u-layout">
@@ -645,7 +648,7 @@
         </div>
       </div>
     </div>
-  </footer>
+  </footer> -->
   <!-- <section class="u-backlink u-clearfix u-grey-80">
     <a class="u-link" href="https://nicepage.com/website-templates" target="_blank">
       <span>Website Templates</span>
@@ -668,11 +671,7 @@
       <path d="m275.565 189.451 223.897 223.897h51.668l-275.565-275.565-275.565 275.565h51.668z"></path>
     </svg>
   </span>
-  <script type="text/javascript">
-    $("#my11").click(function () {
-      $("#myform").submit();
-    });
-  </script>
+  {% include 'footer.html' %}
 
 <script>
   $("#loading").hide();
