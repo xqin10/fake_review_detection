@@ -28,7 +28,7 @@ We help our customers detect which is the deceptive reviews and notify them as s
     <script src="https://cdn.bootcdn.net/ajax/libs/bootstrap-validator/0.5.3/js/bootstrapValidator.min.js"></script>
     <link href="https://cdn.bootcdn.net/ajax/libs/bootstrap-validator/0.5.3/css/bootstrapValidator.min.css"
         rel="stylesheet">
-    <script src="../static/js/myvalidator.js"></script>
+    <!-- <script src="../static/js/myvalidator.js"></script> -->
 </head>
 
 <body>
@@ -68,13 +68,18 @@ We help our customers detect which is the deceptive reviews and notify them as s
                     <div id="main" style="width: 600px;height:400px;"></div>
                 </div>
                 <div class="p-2 d-flex flex-column mb-3">
+                    {% if fake_ret | length > 0 %}
                     <div class="p2 bold"><strong>Fake Reviews</strong></div>
                     <div class="p-2">{{ fake_reviews_count }}</div>
+                    {% endif %}
+                    {% if real_ret | length > 0 %} 
                     <div class="p2 bold"><strong>Real Reviews</strong></div>
                     <div class="p-2">{{ true_reviews_count }}</div>
+                    {% endif %}
                 </div>
             </div>
             <div style="max-width: 30%;margin-left: 35%;"></div>
+            {% if fake_ret | length > 0 %}
             <h1 style="margin-left: 10%;">Fake Reviews</h1>
             <p style="margin-left: 10%;">List of Fake Reviews</p>
             <table style="margin-left: 10%; margin-right: 10%;">
@@ -86,7 +91,7 @@ We help our customers detect which is the deceptive reviews and notify them as s
                             {% if review_title is not none %}
                             <h4>{{r.review_title}}</h4>
                             {% endif %}
-                            <font size="2">Probability: {{ r.deceptive_prob }} Rating: {{r.review_rating}}</font>
+                            <font size="2">Fake Probability: {{ r.fake_prob }} Rating: {{r.review_rating}}</font>
                             <div class="alert alert-danger" role="alert">
                                 {{ r.review }}
                             </div>
@@ -95,18 +100,20 @@ We help our customers detect which is the deceptive reviews and notify them as s
                     {% endfor %}
                 </tbody>
             </table>
+            {% endif %}
+            {% if real_ret | length > 0 %}
             <h1 style="margin-left: 10%;">Real Reviews</h1>
             <p style="margin-left: 10%;">List of Real Reviews</p>
             <table style="margin-left: 10%; margin-right: 10%;">
                 <tbody>
-                    {% for r in not_fake_ret %}
+                    {% for r in real_ret %}
                     <tr>
                         <td>
                             <font size="2">{{r.review_date}}</font>
                             {% if review_title is not none %}
                             <h4>{{r.review_title}}</h4>
                             {% endif %}
-                            <font size="2">Probability: {{ r.real_prob }} Rating: {{r.review_rating}}</font>
+                            <font size="2">Authentic Probability: {{ r.real_prob }} Rating: {{r.review_rating}}</font>
                             <div class="alert alert-info" role="alert">
                                 {{ r.review }}
                             </div>
@@ -115,88 +122,30 @@ We help our customers detect which is the deceptive reviews and notify them as s
                     {% endfor %}
                 </tbody>
             </table>
+            {% endif %}
             {% if paginations is not none %}
-            <!-- <form action="http://smartacus.ml/results" method="POST" target="_blank" id="myform"> -->
-            <!-- <input type="hidden" name="urlinput" id="url" /> -->
-            <!-- <button class="btn-outline-light btn-sm" role="button" type="submit"
-                    style="/*font-weight: bold;*/background: rgb(234,155,105);margin-top: 0%;padding-top: 6px;padding-bottom: 4px; margin-bottom: 4%;"
-                    target="_top" value="Analyze" id="submit">Analyze Page</button> -->
-            <!-- </form> -->
-<!-- <<<<<<< HEAD
             <form action="{{ url_for('results')}}" method="POST" id="page_form">
-                <input type="hidden" name="urlinput_pagination"></input>
                 <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-center">
                         {% for p in paginations %}
                         {% if p.status is not none %}
                         <li class="page-item disabled"><a class="page-link" aria-disabled="true">{{p.name}}</a></li>
                         {% else %}
-                        <input type="hidden" name="urlinput_pagination" value="{{p.url}}"></input>
-                        <li class="page-item"><a class="page-link" type="submit" target="_top">{{p.name}}</a></li>
+                        <input type="hidden" name="urlinput_1" value="{{p.url}}"></input>
+                        <li class="page-item">
+                            <button class="page-link" type="submit">{{p.name}}</a>
+                        </li>
                         {% endif %}
                         {% endfor %}
                     </ul>
                 </nav>
             </form>
-======= -->
-            <!-- <form action="{{ url_for('results')}}" method="POST" id="myform" name="urlinput">
-                <input id="urlinput" type="hidden"></inpute> -->
-            <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center">
-                    {% for p in paginations %}
-                    {% if p.status is not none %}
-                    <li class="page-item disabled"><a class="page-link" aria-disabled="true">{{p.name}}</a></li>
-                    {% else %}
-                    <li class="page-item"><input type="hidden" value="{{p.url}}"></inpute><a class="page-link"
-                            type="submit" target="_top">{{p.name}}</a></li>
-                    {% endif %}
-                    {% endfor %}
-                </ul>
-            </nav>
-            <!-- </form> -->
-<!-- >>>>>>> Iteration3-integration -->
             {% endif %}
         </section><!-- End: Highlight Clean -->
         {% endif %}
     </section><!-- Start: Footer Dark -->
-
     {% include 'footer.html' %}
-    <script type="text/javascript">
-// <<<<<<< HEAD
-//         // function pagination_click(){
-//         //     document.getElementById("myform").submit()
-//         // }
-//         // $("a.page-link").click(function () {
-//         //     console.log("clicking.....")
-//         //     // $("#urlinput").attr("value",)
-//         //     // $("url").setAttribute("value", "https://www.tripadvisor.com/" + str($(this).attr("href")))
-//         //     $("input[name='urlinput_pagination']").val($(this).siblings("input").attr("value"))
-//         //     // $("input[name='urlinput']").value("ssssss")
-//         //     $("#page_form").submit()
-//         // });
-//         // $("li.page-item").click(function () {
-//         //     console.log("clicking.....")
-//         //     $("input[name='urlinput']").val($(this).children("input").attr("value"))
-//         //     $("#header_search_box").submit()
-//         // });
-// =======
-        $("a.page-link").click(function () {
-            console.log("clicking.....")
-            // $("#urlinput").attr("value",)
-            // $("url").setAttribute("value", "https://www.tripadvisor.com/" + str($(this).attr("href")))
-            // $("input[name='urlinput']").val($(this).siblings("input").attr("value"))
-            // $("input[name='urlinput']").value("ssssss")
-            // $("#header_search_box").submit()
-            $.ajax({
-            });
-        });
-        $("li.page-item").click(function () {
-            console.log("clicking.....")
-            $("input[name='urlinput']").val($(this).children("input").attr("value"))
-            $("#header_search_box").submit()
-        });
-// >>>>>>> Iteration3-integration
-    </script>
+
     <script type="text/javascript">
         var myChart = echarts.init(document.getElementById('main'));
 

@@ -14,12 +14,11 @@ $(function () {
                         message: 'Please enter an URL.'
                     },
                     regexp: {
-                        // regexp: /(www.tripadvisor.com.*\/(Hotel_Review-|Restaurant_Review-))|(www.yelp.com.*)/g,
-                        regexp: /www.yelp.com.*/g,
+                        regexp: /www\.yelp\.com.*/g,
                         message: 'Please Enter a solid URL for Tripadvisor or Yelp.'
                     },
                     regexp: {
-                        regexp: /www.tripadvisor.com.*\/(Hotel_Review-|Restaurant_Review-)/g,
+                        regexp: /www\.tripadvisor\.com.*\/(Hotel_Review-|Restaurant_Review-)/g,
                         // regexp: /www.yelp.com.*/g,
                         message: 'Please Enter a solid URL for Tripadvisor or Yelp.'
                     }
