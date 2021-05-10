@@ -19,6 +19,7 @@ from flask_login import LoginManager, UserMixin
 import requests
 from bs4 import BeautifulSoup
 from flask import jsonify
+from flask import Flask, send_from_directory
 
 app = Flask(__name__)
 
@@ -79,6 +80,9 @@ def charts():
                            true_reviews_count=true_reviews_count
                            )
 
+@app.route("/download")
+def download():
+    return send_from_directory(r"resources",filename="extentions.zip",as_attachment=True)
 
 @app.route('/home')
 def home():
