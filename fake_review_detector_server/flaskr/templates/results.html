@@ -103,11 +103,11 @@
                     <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#svg-4b89"></use>
                 </svg>
             </div>
-            {% if review_title is not none %}
+            {% if r.review_title is not none %}
             <p class="u-text u-text-2"><b>{{r.review_title}}</b>
                 {% endif %}
             </p>
-            <p class="u-text u-text-2">Fake Probability: {{ r.deceptive_prob }} Rating: {{r.review_rating}}
+            <p class="u-text u-text-2">Fake Probability: {{ r.fake_prob }} Rating: {{r.review_rating}}
             </p>
             <p class="u-text u-text-default u-text-3"> {{ r.review }}</p>
             {% endfor %}
@@ -125,11 +125,11 @@
                     <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#svg-9df1"></use>
                 </svg>
             </div>
-            {% if review_title is not none %}
+            {% if r.review_title is not none %}
             <p class="u-text u-text-5"><b>{{r.review_title}}</b>
                 {% endif %}
             </p>
-            <p class="u-text u-text-2">Authentic Probability: {{ r.deceptive_prob }} Rating: {{r.review_rating}}
+            <p class="u-text u-text-2">Authentic Probability: {{ r.real_prob }} Rating: {{r.review_rating}}
             </p>
             <p class="u-text u-text-default u-text-6">{{ r.review }}</p>
             {% endfor %}
