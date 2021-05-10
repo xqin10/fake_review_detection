@@ -116,6 +116,9 @@ def howtouse():
 def howitworks():
     return render_template("How-It-Works.html")
 
+@app.route("/geteducated")
+def geteducated():
+    return render_template("Get-Educated.html")
 
 @app.route("/contact")
 def contact():

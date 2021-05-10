@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Smartacus (Backup 1616461959446) (Backup 1616639481373) (Backup 1616644201182) (Backup 1616904553068)</title>
+    <meta name="description"
+        content="Popular travel website trip advisor was flooded with millions of spam hotel reviews in 2019, travellers were misled by these spam reviews and ended up choosing accommodations that did not meet their expectations. It is particularly hard for humans to distinguish spam review from genuine reviews. 
+
+We help our customers detect which is the deceptive reviews and notify them as soon as they open the webpage. The review contents will be sent back to our server side and have a judgement immediately.">
+    <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css?h=bd1e31922ddba710f575551d3c65515d">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i">
+    <link rel="stylesheet" href="../static//fonts/font-awesome.min.css?h=2cbf12caab31562d03bae9544edcad5f">
+    <link rel="stylesheet" href="../static//fonts/simple-line-icons.min.css?h=2cbf12caab31562d03bae9544edcad5f">
+    <link rel="stylesheet" href="../static//css/Footer-Clean.css?h=80440af34c3a73cbe2f06ff4585d315b">
+    <link rel="stylesheet" href="../static//css/Highlight-Clean.css?h=22f5c37d9256feae966552e68b9ff2f3">
+    <link rel="stylesheet" href="../static//css/Highlight-Phone.css?h=34cb454057667119be71974590677f5d">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.css">
+    <link rel="stylesheet" href="../static//css/smoothproducts.css?h=38a515b6b30123300b3619cce6411cec">
+    <link rel="stylesheet" href="../static//css/Team-Clean.css?h=96674734e5c3c822192833a73a70ff3f">
+    <link rel="stylesheet" href="../static//css/Team-Grid.css?h=037c10c4e83bd71c345e85c360a593fe">
+    <link rel="stylesheet" href="../static//css/untitled.css?h=f2e0b8d12ec856e7237c0a7c9fe690d3">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/4.3.0/echarts.min.js"></script>
+    <script src="../static/js/jquery.min.js?h=89312d34339dcd686309fe284b3f226f"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/bootstrap-validator/0.5.3/js/bootstrapValidator.min.js"></script>
+    <link href="https://cdn.bootcdn.net/ajax/libs/bootstrap-validator/0.5.3/css/bootstrapValidator.min.css"
+        rel="stylesheet">
+    <script src="../static/js/myvalidator.js"></script>
+</head>
+
+<body>
+    {% include 'header.html' %}
+    <section class="clean-block clean-services dark">
+        <div class="container">
+            <div class="block-heading"></div>
+        </div>
+        <br>
+
+        {% if ret_code == 1 %}
+        <br>
+        <h1 style="margin-left: 10%;">{{ msg }}</h1>
+        {% else %}
+        <section class="highlight-clean">
+            <div class="container">
+                <div class="intro" style="max-width: 100%;">
+                    <h2 class="text-center" style="max-width: 100%;">Review Integrity Report</h2>
+                    <!-- <p class="text-center" style="max-width: 100%;width: 100%;text-align: justify;"></p> -->
+                </div>
+            </div>
+            <h3 style="margin-left: 0%;text-align: center;padding-bottom: 5%;">for
+                {% if platform_type == 'TripAdvisor' %}
+                <img class="img-fluid" src="../static/img/TripAdvisor.svg" width="220" height="40" />
+                {% elif platform_type == 'Yelp' %}
+                <img class="img-fluid" src="../static/img/Yelp.png" width="220" height="40" />
+                {% endif %}
+
+                {{biz_type}} <span class="text-secondary">{{shop_name}}</span>
+            </h3>
+            <div class="d-flex p-3 justify-content-center mb-3 ml-auto">
+                <div class="p-2 d-flex flex-column mb-3">
+                    <div class="p2 bold"><strong>Total Reviews</strong></div>
+                    <div class="p-2">{{ fake_reviews_count+true_reviews_count }}</div>
+                </div>
+                <div class="p-2 d-flex flex-column mb-3">
+                    <div id="main" style="width: 600px;height:400px;"></div>
+                </div>
+                <div class="p-2 d-flex flex-column mb-3">
+                    <div class="p2 bold"><strong>Fake Reviews</strong></div>
+                    <div class="p-2">{{ fake_reviews_count }}</div>
+                    <div class="p2 bold"><strong>Real Reviews</strong></div>
+                    <div class="p-2">{{ true_reviews_count }}</div>
+                </div>
+            </div>
+            <div style="max-width: 30%;margin-left: 35%;"></div>
+            <h1 style="margin-left: 10%;">Fake Reviews</h1>
+            <p style="margin-left: 10%;">List of Fake Reviews</p>
+            <table style="margin-left: 10%; margin-right: 10%;">
+                <tbody>
+                    {% for r in fake_ret %}
+                    <tr>
+                        <td>
+                            <font size="2">{{r.review_date}}</font>
+                            {% if review_title is not none %}
+                            <h4>{{r.review_title}}</h4>
+                            {% endif %}
+                            <font size="2">Probability: {{ r.deceptive_prob }} Rating: {{r.review_rating}}</font>
+                            <div class="alert alert-danger" role="alert">
+                                {{ r.review }}
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <h1 style="margin-left: 10%;">Real Reviews</h1>
+            <p style="margin-left: 10%;">List of Real Reviews</p>
+            <table style="margin-left: 10%; margin-right: 10%;">
+                <tbody>
+                    {% for r in not_fake_ret %}
+                    <tr>
+                        <td>
+                            <font size="2">{{r.review_date}}</font>
+                            {% if review_title is not none %}
+                            <h4>{{r.review_title}}</h4>
+                            {% endif %}
+                            <font size="2">Probability: {{ r.real_prob }} Rating: {{r.review_rating}}</font>
+                            <div class="alert alert-info" role="alert">
+                                {{ r.review }}
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% if paginations is not none %}
+            <!-- <form action="http://smartacus.ml/results" method="POST" target="_blank" id="myform"> -->
+            <!-- <input type="hidden" name="urlinput" id="url" /> -->
+            <!-- <button class="btn-outline-light btn-sm" role="button" type="submit"
+                    style="/*font-weight: bold;*/background: rgb(234,155,105);margin-top: 0%;padding-top: 6px;padding-bottom: 4px; margin-bottom: 4%;"
+                    target="_top" value="Analyze" id="submit">Analyze Page</button> -->
+            <!-- </form> -->
+            <!-- <form action="{{ url_for('results')}}" method="POST" id="myform" name="urlinput">
+                <input id="urlinput" type="hidden"></inpute> -->
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    {% for p in paginations %}
+                    {% if p.status is not none %}
+                    <li class="page-item disabled"><a class="page-link" aria-disabled="true">{{p.name}}</a></li>
+                    {% else %}
+                    <li class="page-item"><input type="hidden" value="{{p.url}}"></inpute><a class="page-link"
+                            type="submit" target="_top">{{p.name}}</a></li>
+                    {% endif %}
+                    {% endfor %}
+                </ul>
+            </nav>
+            <!-- </form> -->
+            {% endif %}
+        </section><!-- End: Highlight Clean -->
+        {% endif %}
+    </section><!-- Start: Footer Dark -->
+
+    {% include 'footer.html' %}
+    <script type="text/javascript">
+        $("a.page-link").click(function () {
+            console.log("clicking.....")
+            // $("#urlinput").attr("value",)
+            // $("url").setAttribute("value", "https://www.tripadvisor.com/" + str($(this).attr("href")))
+            // $("input[name='urlinput']").val($(this).siblings("input").attr("value"))
+            // $("input[name='urlinput']").value("ssssss")
+            // $("#header_search_box").submit()
+            $.ajax({
+            });
+        });
+        $("li.page-item").click(function () {
+            console.log("clicking.....")
+            $("input[name='urlinput']").val($(this).children("input").attr("value"))
+            $("#header_search_box").submit()
+        });
+    </script>
+    <script type="text/javascript">
+        var myChart = echarts.init(document.getElementById('main'));
+
+        option = {
+            title: {
+                text: 'Fake Review Proportion',
+                subtext: 'for this hotel',
+                left: 'center'
+            },
+            tooltip: {
+                trigger: 'item'
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'bottom',
+            },
+            series: [
+                {
+                    name: 'Reviews',
+                    type: 'pie',
+                    radius: '50%',
+                    data: [
+                        { value: '{{fake_reviews_count}}', name: 'Fake ({{fake_reviews_count}})' },
+                        { value: '{{true_reviews_count}}', name: 'Real ({{true_reviews_count}})' }
+                    ],
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        };
+        // Display
+        myChart.setOption(option);
+    </script>
+    <script src="../static//bootstrap/js/bootstrap.min.js?h=ba42258394f86cd7822f0e850e2d60b1"></script>
+    <script src="../static//js/bs-init.js?h=36ffa0191e9d112d6a97bac11fc65d8e"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
+    <script src="../static//js/smoothproducts.min.js?h=975b2635c9a06eae9f47d6cae8158a12"></script>
+    <script src="../static//js/theme.js?h=417b03f5f0a4f9f27f8c248f532eb5af"></script>
+</body>
+
+</html>
