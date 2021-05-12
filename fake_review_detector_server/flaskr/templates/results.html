@@ -38,6 +38,7 @@
 
 <body class="u-body">
     {% include 'header.html' %}
+    {% if ret_code == 0 %}
     <section class="u-align-left u-clearfix u-section-1" id="sec-c6c6">
         <div class="u-clearfix u-sheet u-valign-middle-md u-valign-middle-sm u-valign-middle-xs u-sheet-1">
             <h1
@@ -157,7 +158,16 @@
         </nav>
     </form>
     {% endif %}
+    <!-- </section> -->
+    {% else %}
+    <section class="u-align-left u-clearfix u-section-1">
+        <div class="u-clearfix u-sheet u-valign-middle-md u-valign-middle-sm u-valign-middle-xs u-sheet-1">
+            <h2
+                class="u-align-center-lg u-align-center-md u-align-center-sm u-align-center-xs u-custom-font u-text u-text-default u-text-1">
+                The entered URL is invalid, please try again. We only support URL of Trip advisor and Yelp reviews.</h2>
+        </div>
     </section>
+    {% endif %}
     <script src="../static//bootstrap/js/bootstrap.min.js?h=ba42258394f86cd7822f0e850e2d60b1"></script>
     <script src="../static//js/bs-init.js?h=36ffa0191e9d112d6a97bac11fc65d8e"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>

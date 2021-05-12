@@ -162,7 +162,7 @@ def predict(y_prob=None):
             # return the labe prediction probability
             y_prob = clf.predict_proba(cv.transform(data).toarray())
             # label prediction probability in percent
-            y_prob_deceptive = y_prob[:, 1]*100
+            y_prob_deceptive = y_prob[:,0]*100
             db.insert_review(mysql, message, my_prediction[0])
 
     total_reviews_count, true_reviews_count = db.get_review_stat(mysql)
