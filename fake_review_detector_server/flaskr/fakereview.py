@@ -476,6 +476,7 @@ def results():
 if __name__ == '__main__':
 
     env = app.config['ENV']
+    env= "Debug"
     print("Loading in {} environment ....".format(env))
 
     # Read resources
