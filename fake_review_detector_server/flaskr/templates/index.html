@@ -611,7 +611,7 @@ of fake reviews.
           word_count = result.word_count
           language = result.language
           prediction = result.prediction
-          if (word_count && word_count < 20 && word_count > 0) {
+          if (word_count < 20 && word_count >= 0) {
             $("#prediction").html("The minimum of words is 20, please paste a review correctly!")
           } else if (language && language != 'en') {
             $("#prediction").html("Sorry, we currently support English as our primary language.")

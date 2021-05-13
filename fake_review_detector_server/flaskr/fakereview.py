@@ -143,8 +143,9 @@ def predict(y_prob=None):
         message = request.form['message']
         data = [message]
         # to count words in string
-        print(message)
-        res = len(re.findall(r'\w+', message))
+        print("message: " + message)
+        # res = len(re.findall(r'\w+', message))
+        res = len(message)
 
         # document level language detection. Think of it like average language of the document!
         nlp = spacy.load('resources/en_core_web_sm')
@@ -152,7 +153,7 @@ def predict(y_prob=None):
         nlp.add_pipe('language_detector', last=True)
         doc = nlp(message)
         main_language = doc._.language["language"]
-        print(main_language)
+        print("language: " + main_language)
 
         # the word limitation
         my_prediction = 0
@@ -191,8 +192,10 @@ def predict_api():
         message = request.form['message']
         data = [message]
         # to count words in string
-        print(message)
-        res = len(re.findall(r'\w+', message))
+        print("message: " + message)
+        # res = len(re.findall(r'\w+', message))
+        res = len(message)
+        print("length: " + str(res))
 
         # document level language detection. Think of it like average language of the document!
         nlp = spacy.load('resources/en_core_web_sm')
@@ -200,7 +203,7 @@ def predict_api():
         nlp.add_pipe('language_detector', last=True)
         doc = nlp(message)
         main_language = doc._.language["language"]
-        print(main_language)
+        print("language: " + main_language)
 
         # the word limitation
         my_prediction = [0]
@@ -360,7 +363,7 @@ def extract_shopname(url, platform_type):
             shop_names = ((url.split('-Reviews-'))[1].split('-'))
             if len(shop_names) == 2:
                 shop_name = shop_names[0]
-            elif len(shop_name) == 3:
+            elif len(shop_names) == 3:
                 shop_name = shop_names[1]
         elif platform_type == 'Yelp':
             shop_names = ((url.split('/biz/'))[1].split('-'))
@@ -369,11 +372,12 @@ def extract_shopname(url, platform_type):
             elif len(shop_names) >= 3:
                 for idx in range(len(shop_names)-1):
                     if idx != len(shop_names)-2:
-                        shop_name += (shop_names[idx]+'-')
+                        shop_name += (shop_names[idx]+' ')
                     else:
                         shop_name += shop_names[idx]
     except BaseException:
         print("Failed to extract shop_name from url!", url)
+    shop_name = shop_name.replace("_"," ")
     return shop_name
 
 
