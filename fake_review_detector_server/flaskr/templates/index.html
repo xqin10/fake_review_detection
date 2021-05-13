@@ -616,9 +616,9 @@ of fake reviews.
           } else if (language && language != 'en') {
             $("#prediction").html("Sorry, we currently support English as our primary language.")
           } else {
-            if (prediction == 0) {
+            if (prediction == 1) {
               $("#prediction").html("This is a Fake Review!")
-            } else if (prediction == 1) {
+            } else if (prediction == 0) {
               $("#prediction").html("Don't worry, it's not a Fake Review")
             }
           }
