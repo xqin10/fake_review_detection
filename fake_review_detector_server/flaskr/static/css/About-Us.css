@@ -9,7 +9,7 @@
 
 .u-section-1 .u-image-1 {
   min-height: 400px;
-  background-image: url("images/Cover_1.gif");
+  background-image: url("img/Cover_1.gif");
 }
 
 .u-section-1 .u-container-layout-1 {
@@ -131,7 +131,7 @@
 .u-section-2 .u-image-1 {
   height: 155px;
   width: 155px;
-  background-image: url("images/Bryan_Profile.png");
+  background-image: url("img/Bryan_Profile.png");
   background-position: 50% 50%;
   margin: 0 auto 0 0;
 }
@@ -151,7 +151,7 @@
 .u-section-2 .u-image-2 {
   height: 155px;
   width: 155px;
-  background-image: url("images/Frank_Profile_pic.png");
+  background-image: url("img/Frank_Profile_pic.png");
   background-position: 50% 50%;
   margin: 0 auto 0 0;
 }
@@ -171,7 +171,7 @@
 .u-section-2 .u-image-3 {
   height: 155px;
   width: 155px;
-  background-image: url("images/Nana_Profile.jpeg");
+  background-image: url("img/Nana_Profile.jpeg");
   background-position: 50% 50%;
   margin: 0 auto 0 0;
 }
@@ -191,7 +191,7 @@
 .u-section-2 .u-image-4 {
   height: 155px;
   width: 155px;
-  background-image: url("images/Lisa.png");
+  background-image: url("img/Lisa.png");
   background-position: 50% 50%;
   margin: 0 auto 0 0;
 }
@@ -211,7 +211,7 @@
 .u-section-2 .u-image-5 {
   height: 155px;
   width: 155px;
-  background-image: url("images/Smruti_profile.png");
+  background-image: url("img/Smruti_profile.png");
   background-position: 50% 50%;
   margin: 0 auto 0 0;
 }
