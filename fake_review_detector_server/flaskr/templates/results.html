@@ -98,19 +98,25 @@
             {% if fake_ret | length > 0 %}
             <h2 class="u-custom-font u-text u-text-default u-text-palette-2-base u-text-1">Fake Reviews</h2>
             {% for r in fake_ret %}
-            <div
+            <!-- <div
                 class="u-border-5 u-border-palette-4-light-1 u-shape u-shape-svg u-text-palette-4-dark-1 u-white u-shape-1">
                 <svg class="u-svg-link" preserveAspectRatio="none" viewBox="0 0 160 40" style="">
                     <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#svg-4b89"></use>
                 </svg>
-            </div>
+            </div> -->
             {% if r.review_title is not none %}
             <p class="u-text u-text-2"><b>{{r.review_title}}</b>
-                {% endif %}
             </p>
-            <p class="u-text u-text-2">Likelihood: {{ r.fake_prob }} Rating: {{r.review_rating}}
+            {% endif %}
+
+            <p class="u-text u-text-2">Likelihood: {{ r.fake_prob }}
             </p>
-            <p class="u-text u-text-default u-text-3"> {{ r.review }}</p>
+            <p class="u-text u-text-2">Review Rating: 
+                {% for s in [0]*r.review_rating %}
+                &#x2605;
+                {% endfor %}
+            </p>
+            <p class="u-text u-text-default u-text-3" style="text-align: justify; text-justify: inter-character"> {{ r.review }}</p>
             {% endfor %}
             {% endif %}
 
@@ -120,19 +126,25 @@
             <h2 class="u-custom-font u-text u-text-custom-color-2 u-text-default u-text-4">Real Reviews</h2>
 
             {% for r in real_ret %}
-            <div
+            <!-- <div
                 class="u-border-5 u-border-palette-4-light-1 u-shape u-shape-svg u-text-palette-4-dark-1 u-white u-shape-2">
                 <svg class="u-svg-link" preserveAspectRatio="none" viewBox="0 0 160 40" style="">
                     <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#svg-9df1"></use>
                 </svg>
-            </div>
+            </div> -->
             {% if r.review_title is not none %}
             <p class="u-text u-text-5"><b>{{r.review_title}}</b>
-                {% endif %}
             </p>
-            <p class="u-text u-text-2">Likelihood: {{ r.real_prob }} Rating: {{r.review_rating}}
+            {% endif %}
+
+            <p class="u-text u-text-2">Likelihood: {{ r.real_prob }}
             </p>
-            <p class="u-text u-text-default u-text-6">{{ r.review }}</p>
+            <p class="u-text u-text-2">Review Rating: 
+                {% for s in [0]*r.review_rating %}
+                &#x2605;
+                {% endfor %}
+            </p>
+            <p class="u-text u-text-default u-text-6" style="text-align: justify; text-justify: inter-character">{{ r.review }}</p>
             {% endfor %}
             {% endif %}
 

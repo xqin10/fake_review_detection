@@ -20,6 +20,9 @@ import requests
 from bs4 import BeautifulSoup
 from flask import jsonify
 from flask import Flask, send_from_directory
+import logging
+from logging.handlers import RotatingFileHandler
+
 
 app = Flask(__name__)
 
@@ -442,13 +445,13 @@ def results():
             if 'review_title' in scrape_data[i]:
                 ret = {
                     "review_title": scrape_data[i]["review_title"],
-                    "review_rating": scrape_data[i]["review_rating"],
+                    "review_rating": int(scrape_data[i]["review_rating"]),
                     "review_date": scrape_data[i]["review_date"],
                     "review": data[i]
                 }
             else:
                 ret = {
-                    "review_rating": scrape_data[i]["review_rating"],
+                    "review_rating": int(scrape_data[i]["review_rating"]),
                     "review_date": scrape_data[i]["review_date"],
                     "review": data[i]
                 }
@@ -516,9 +519,17 @@ if __name__ == '__main__':
     # Intialize MySQL
     mysql = MySQL(app)
 
+    # Setting Logs
+    logging.basicConfig(level=logging.DEBUG)
+    file_log_handler = RotatingFileHandler("/opt/logs/log", maxBytes=1024*1024*100,backupCount=100)
+    formatter = logging.Formatter("%(levelname)s %(filename)s: %(lineno)d %(message)s")
+    file_log_handler.setFormatter(formatter)
+    logging.getLogger().addHandler(file_log_handler)
+
     if env == 'production':
         app.run(host="0.0.0.0", port=8000)
-        print("Running server in PRODUCTION mode ...")
+        logging.info("Running server in PRODUCTION mode ...")
     else:
+        logging.info("Running server in DEBUG mode ...")
         app.run(debug=True)
-        print("Running server in DEBUG mode ...")
+        logging.info("Running server in DEBUG mode ...")
