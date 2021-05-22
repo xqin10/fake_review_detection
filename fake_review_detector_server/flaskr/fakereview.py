@@ -34,6 +34,49 @@ login_manager.init_app(app)
 
 users = {'test': {'pw': 'team_mp12'}}
 
+# Intialize MySQL
+mysql = MySQL(app)
+
+def init():
+    env = app.config['ENV']
+    print("Loading in {} environment ....".format(env))
+
+    # Read resources
+    clf = bz2.BZ2File(open('resources/LGBM.pkl.pbz2', 'rb'))
+    clf = cPickle.load(clf)
+
+    cv = bz2.BZ2File(open('resources/cvtransform.pkl.pbz2', 'rb'))
+    cv = cPickle.load(cv)
+
+    # Read config.init
+    config = configparser.ConfigParser()
+    config.read("config/config.ini")
+
+    # Change this to your secret key (can be anything, it's for extra protection)
+    app.secret_key = 'LUCKY'
+
+    # Enter your database connection details below
+    if env == 'production':
+        app.config['MYSQL_HOST'] = config.get("db-prod", "dbhost")
+        app.config['MYSQL_USER'] = config.get("db-prod", "dbuser")
+        app.config['MYSQL_PASSWORD'] = config.get(
+            "db-prod", "dbpassword")  # later change it to config.ini
+        app.config['MYSQL_DB'] = config.get("db-prod", "dbname")
+    else:
+        app.config['MYSQL_HOST'] = config.get("db-dev", "dbhost")
+        app.config['MYSQL_USER'] = config.get("db-dev", "dbuser")
+        app.config['MYSQL_PASSWORD'] = config.get(
+            "db-dev", "dbpassword")  # later change it to config.ini
+        app.config['MYSQL_DB'] = config.get("db-dev", "dbname")
+
+    # Setting Logs
+    logging.basicConfig(level=logging.DEBUG)
+    file_log_handler = RotatingFileHandler("/opt/logs/log", maxBytes=1024*1024*100,backupCount=100)
+    formatter = logging.Formatter("%(levelname)s %(filename)s: %(lineno)d %(message)s")
+    file_log_handler.setFormatter(formatter)
+    logging.getLogger().addHandler(file_log_handler)
+
+init()
 
 class User(UserMixin):
     pass
@@ -77,7 +120,9 @@ def index():
 
 @app.route('/charts', methods=['GET', 'POST'])
 def charts():
-    total_reviews_count, true_reviews_count = db.get_review_stat(mysql)
+    # Not use anymore
+    # total_reviews_count, true_reviews_count = db.get_review_stat(mysql)
+    total_reviews_count, true_reviews_count = -1, -1
     return render_template('charts.html',
                            fake_reviews_count=total_reviews_count-true_reviews_count,
                            true_reviews_count=true_reviews_count
@@ -89,7 +134,9 @@ def download():
 
 @app.route('/home')
 def home():
-    total_reviews_count, true_reviews_count = db.get_review_stat(mysql)
+    # Not use anymore
+    # total_reviews_count, true_reviews_count = db.get_review_stat(mysql)
+    total_reviews_count, true_reviews_count = -1, -1
     return render_template('index.html',
                            word_count=None,
                            language=None,
@@ -169,7 +216,9 @@ def predict(y_prob=None):
             y_prob_deceptive = y_prob[:,0]*100
             db.insert_review(mysql, message, my_prediction[0])
 
-    total_reviews_count, true_reviews_count = db.get_review_stat(mysql)
+    # Not use anymore
+    # total_reviews_count, true_reviews_count = db.get_review_stat(mysql)
+    total_reviews_count, true_reviews_count = -1, -1
     return render_template('index.html',
                            word_count=res,
                            language=main_language,
@@ -221,7 +270,9 @@ def predict_api():
             print(y_prob_deceptive)
             db.insert_review(mysql, message, my_prediction[0])
 
-    total_reviews_count, true_reviews_count = db.get_review_stat(mysql)
+    # Not use anymore
+    # total_reviews_count, true_reviews_count = db.get_review_stat(mysql)
+    total_reviews_count, true_reviews_count = -1, -1
     return jsonify({
         'word_count': res,
         'language': main_language,
@@ -484,52 +535,9 @@ def results():
 
 
 if __name__ == '__main__':
+    init()
 
-    env = app.config['ENV']
-    print("Loading in {} environment ....".format(env))
-
-    # Read resources
-    clf = bz2.BZ2File(open('resources/LGBM.pkl.pbz2', 'rb'))
-    clf = cPickle.load(clf)
-
-    cv = bz2.BZ2File(open('resources/cvtransform.pkl.pbz2', 'rb'))
-    cv = cPickle.load(cv)
-
-    # Read config.init
-    config = configparser.ConfigParser()
-    config.read("config/config.ini")
-
-    # Change this to your secret key (can be anything, it's for extra protection)
-    app.secret_key = 'LUCKY'
-
-    # Enter your database connection details below
-    if env == 'production':
-        app.config['MYSQL_HOST'] = config.get("db-prod", "dbhost")
-        app.config['MYSQL_USER'] = config.get("db-prod", "dbuser")
-        app.config['MYSQL_PASSWORD'] = config.get(
-            "db-prod", "dbpassword")  # later change it to config.ini
-        app.config['MYSQL_DB'] = config.get("db-prod", "dbname")
-    else:
-        app.config['MYSQL_HOST'] = config.get("db-dev", "dbhost")
-        app.config['MYSQL_USER'] = config.get("db-dev", "dbuser")
-        app.config['MYSQL_PASSWORD'] = config.get(
-            "db-dev", "dbpassword")  # later change it to config.ini
-        app.config['MYSQL_DB'] = config.get("db-dev", "dbname")
-
-    # Intialize MySQL
-    mysql = MySQL(app)
-
-    # Setting Logs
-    logging.basicConfig(level=logging.DEBUG)
-    file_log_handler = RotatingFileHandler("/opt/logs/log", maxBytes=1024*1024*100,backupCount=100)
-    formatter = logging.Formatter("%(levelname)s %(filename)s: %(lineno)d %(message)s")
-    file_log_handler.setFormatter(formatter)
-    logging.getLogger().addHandler(file_log_handler)
-
-    if env == 'production':
-        app.run(host="0.0.0.0", port=8000)
-        logging.info("Running server in PRODUCTION mode ...")
-    else:
-        logging.info("Running server in DEBUG mode ...")
-        app.run(debug=True)
-        logging.info("Running server in DEBUG mode ...")
+# if __name__ != '__main__':
+#      gunicorn_logger = logging.getLogger('gunicorn.error')
+#      app.logger.handlers = gunicorn_logger.handlers
+#      app.logger.setLevel(gunicorn_logger.level)
