@@ -1,0 +1,104 @@
+<header class="u-clearfix u-header u-header" id="sec-1dc5">
+  <div class="u-clearfix u-sheet u-valign-middle-lg u-sheet-1">
+    <nav class="u-menu u-menu-dropdown u-offcanvas u-menu-1">
+      <div class="menu-collapse" style="font-size: 1rem; letter-spacing: 0px; font-weight: 700;">
+        <a class="u-button-style u-custom-active-border-color u-custom-border u-custom-border-color u-custom-borders u-custom-hover-border-color u-custom-left-right-menu-spacing u-custom-padding-bottom u-custom-text-color u-custom-text-hover-color u-custom-top-bottom-menu-spacing u-nav-link u-text-active-palette-1-base u-text-hover-palette-2-base"
+          href="{{ url_for('home') }}" style="padding: 4px; font-size: calc(1em + 8px);">
+          <svg>
+            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#menu-hamburger"></use>
+          </svg>
+          <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <defs>
+              <symbol id="menu-hamburger" viewBox="0 0 16 16" style="width: 16px; height: 16px;">
+                <rect y="1" width="16" height="2"></rect>
+                <rect y="7" width="16" height="2"></rect>
+                <rect y="13" width="16" height="2"></rect>
+              </symbol>
+            </defs>
+          </svg>
+        </a>
+      </div>
+      <div class="u-custom-menu u-nav-container">
+        <ul class="u-nav u-spacing-5 u-unstyled u-nav-1">
+          <li class="u-nav-item"><a
+              class="u-border-active-palette-1-base u-border-hover-palette-1-base u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-palette-1-base u-text-grey-90 u-text-hover-palette-2-base"
+              href="{{ url_for('home') }}" style="padding: 10px;">Home</a>
+          </li>
+          <li class="u-nav-item"><a
+              class="u-border-active-palette-1-base u-border-hover-palette-1-base u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-palette-1-base u-text-grey-90 u-text-hover-palette-2-base"
+              href="{{ url_for('howitworks') }}" style="padding: 10px;">How It Works</a>
+          </li>
+          <li class="u-nav-item"><a
+              class="u-border-active-palette-1-base u-border-hover-palette-1-base u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-palette-1-base u-text-grey-90 u-text-hover-palette-2-base"
+              href="{{ url_for('geteducated') }}" style="padding: 10px;">Get Educated</a>
+          </li>
+          <li class="u-nav-item"><a
+              class="u-border-active-palette-1-base u-border-hover-palette-1-base u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-palette-1-base u-text-grey-90 u-text-hover-palette-2-base"
+              href="{{ url_for('about') }}" style="padding: 10px;">About Us</a>
+          </li>
+        </ul>
+      </div>
+      <div class="u-custom-menu u-nav-container-collapse">
+        <div class="u-black u-container-style u-inner-container-layout u-opacity u-opacity-95 u-sidenav">
+          <div class="u-sidenav-overflow">
+            <div class="u-menu-close"></div>
+            <ul class="u-align-center u-nav u-popupmenu-items u-unstyled u-nav-2">
+              <li class="u-nav-item"><a class="u-button-style u-nav-link" href="{{ url_for('home') }}"
+                  style="padding: 10px 20px;">Home</a>
+              </li>
+              <li class="u-nav-item"><a class="u-button-style u-nav-link" href="{{ url_for('howitworks') }}"
+                  style="padding: 10px 20px;">How It Works</a>
+              </li>
+              <li class="u-nav-item"><a class="u-button-style u-nav-link" href="{{ url_for('geteducated') }}"
+                  style="padding: 10px 20px;">Get Educated</a>
+              </li>
+              <li class="u-nav-item"><a class="u-button-style u-nav-link" href="{{ url_for('about') }}"
+                  style="padding: 10px 20px;">About Us</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="u-black u-menu-overlay u-opacity u-opacity-70"></div>
+      </div>
+    </nav>
+    <a href="{{ url_for('home') }}" data-page-id="372948" class="u-image u-logo u-image-1" data-image-width="1001"
+      data-image-height="260" title="Home">
+      <img src="../static/img/SMARTACUS1.png" class="u-logo-image u-logo-image-1" data-image-width="186.0782">
+    </a>
+    <div class="u-form u-hidden-sm u-hidden-xs u-form-1">
+      <form action="{{ url_for('results')}}" method="POST"
+        class="u-clearfix u-form-horizontal u-form-spacing-15 u-inner-form" style="padding: 15px;" source="custom"
+        name="form">
+        <div class="u-form-group u-form-name">
+          <label for="name-6797" class="u-form-control-hidden u-label">Name</label>
+          <input type="text" placeholder="https://www." id="name-6797" name="urlinput"
+            class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-radius-50 u-input-1" required="">
+        </div>
+        <div class="u-align-center u-form-group u-form-submit">
+          <a
+            class="u-btn u-btn-round u-btn-submit u-button-style u-custom-font u-font-oswald u-gradient u-hover-palette-3-base u-none u-radius-4 u-text-body-alt-color u-text-hover-black u-btn-1">ANALYZE<br>
+          </a>
+          <input type="submit" value="submit" class="u-form-control-hidden">
+        </div>
+        <div class="u-form-send-message u-form-send-success">Thank you! Your message has been sent.</div>
+        <div class="u-form-send-error u-form-send-message">Unable to send your message. Please fix errors then try
+          again.</div>
+        <input type="hidden" value="" name="recaptchaResponse">
+      </form>
+    </div>
+    <a class="u-hidden-lg u-hidden-md u-hidden-xl u-icon u-icon-circle u-text-palette-1-base u-icon-1"
+      href="/home#sec-1346" data-page-id="372948"><svg class="u-svg-link" preserveAspectRatio="xMidYMin slice"
+        viewBox="0 0 52.966 52.966" style="">
+        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#svg-a058"></use>
+      </svg><svg class="u-svg-content" viewBox="0 0 52.966 52.966" x="0px" y="0px" id="svg-a058"
+        style="enable-background:new 0 0 52.966 52.966;">
+        <circle style="fill:#57ABC1;" cx="21.983" cy="21" r="20"></circle>
+        <line style="fill:none;stroke:#556080;stroke-width:2;stroke-linecap:round;stroke-miterlimit:10;" x1="35.437"
+          y1="35.798" x2="50.983" y2="51.966"></line>
+        <path style="fill:#7CCBD8;" d="M3.002,27.253c0.848,2.582,2.24,5.018,4.167,7.146L35.382,6.186
+	c-2.129-1.928-4.564-3.319-7.146-4.167L3.002,27.253z"></path>
+        <path style="fill:#556080;" d="M21.983,42c-11.58,0-21-9.42-21-21s9.42-21,21-21s21,9.42,21,21S33.562,42,21.983,42z M21.983,2
+	c-10.477,0-19,8.523-19,19s8.523,19,19,19s19-8.523,19-19S32.459,2,21.983,2z"></path>
+      </svg></a>
+  </div>
+</header>
