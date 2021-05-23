@@ -37,16 +37,16 @@ users = {'test': {'pw': 'team_mp12'}}
 # Intialize MySQL
 mysql = MySQL(app)
 
+# Read resources
+clf = bz2.BZ2File(open('resources/LGBM.pkl.pbz2', 'rb'))
+clf = cPickle.load(clf)
+
+cv = bz2.BZ2File(open('resources/cvtransform.pkl.pbz2', 'rb'))
+cv = cPickle.load(cv)
+
 def init():
     env = app.config['ENV']
     print("Loading in {} environment ....".format(env))
-
-    # Read resources
-    clf = bz2.BZ2File(open('resources/LGBM.pkl.pbz2', 'rb'))
-    clf = cPickle.load(clf)
-
-    cv = bz2.BZ2File(open('resources/cvtransform.pkl.pbz2', 'rb'))
-    cv = cPickle.load(cv)
 
     # Read config.init
     config = configparser.ConfigParser()
